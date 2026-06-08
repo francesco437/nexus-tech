@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexus Tech</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-gray-950">
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const ADMIN_PASSWORD = 'admin123';
+
+function getProducts() {
+  const stored = localStorage.getItem('nexus-products');
+  return stored ? JSON.parse(stored) : [];
+}
+function saveProducts(products) {
+  localStorage.setItem('nexus-products', JSON.stringify(products));
+}
+function addProduct(product) {
+  const products = getProducts();
+  products.push(product);
+  saveProducts(products);
+}
+function deleteProduct(id) {
+  saveProducts(getProducts().filter(p => p.id !== id));
+}
+function updateProduct(updated) {
+  saveProducts(getProducts().map(p => p.id === updated.id ? updated : p));
+}
+
+function AdminPage({ onBack }) {
+  const [authed, setAuthed] = useState(false);
+  const [password, setPassword] = useState('');
+  const [products, setProducts] = useState([]);
+  const [form, setForm] = useState({ name:'', tagline:'', category:'Audio', price:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' });
+  const [editId, setEditId] = useState(null);
+  const [specInput, setSpecInput] = useState({ label:'', value:'' });
+
+  useEffect(() => { if (authed) setProducts(getProducts()); }, [authed]);
+
+  if (!authed) return (
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="bg-gray-900 p-8 rounded-2xl w-80">
+        <h2 className="text-white text-2xl font-bold mb-6 text-center">Admin Login</h2>
+        <input type="password" placeholder="Password" value={password}
+          onChange={e => setPassword(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && password === ADMIN_PASSWORD && setAuthed(true)}
+          className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg mb-4 outline-none" />
+        <button onClick={() => password === ADMIN_PASSWORD ? setAuthed(true) : alert('Password errata!')}
+          className="w-full bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-lg font-semibold transition">
+          Accedi
+        </button>
+      </div>
+    </div>
+  );
+
+  const handleSubmit = () => {
+    if (!form.name || !form.price) return alert('Nome e prezzo obbligatori!');
+    if (editId) { updateProduct({ ...form, id: editId }); }
+    else { addProduct({ ...form, id: crypto.randomUUID() }); }
+    setProducts(getProducts());
+    setForm({ name:'', tagline:'', category:'Audio', price:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' });
+    setEditId(null);
+  };
+
+  const handleEdit = (p) => { setEditId(p.id); setForm({ ...p }); };
+  const handleDelete = (id) => { if (confirm('Eliminare?')) { deleteProduct(id); setProducts(getProducts()); } };
+  const addSpec = () => {
+    if (specInput.label && specInput.value) {
+      setForm({ ...form, specs: [...form.specs, specInput] });
+      setSpecInput({ label:'', value:'' });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-white p-6">
+      <div className="flex items-center gap-4 mb-8">
+        <button onClick={onBack} className="text-gray-400 hover:text-white transition">← Torna al sito</button>
+        <h1 className="text-3xl font-bold">Admin <span className="text-purple-400">Panel</span></h1>
+      </div>
+      <div className="bg-gray-900 rounded-2xl p-6 mb-10">
+        <h2 className="text-xl font-semibold mb-4">{editId ? 'Modifica Prodotto' : 'Aggiungi Prodotto'}</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <input placeholder="Nome" value={form.name} onChange={e => setForm({...form, name:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <input placeholder="Tagline" value={form.tagline} onChange={e => setForm({...form, tagline:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <select value={form.category} onChange={e => setForm({...form, category:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white">
+            {['Audio','Wearables','Computing','Vision','Home','Gaming'].map(c => <option key={c}>{c}</option>)}
+          </select>
+          <input placeholder="Prezzo (€)" type="number" value={form.price} onChange={e => setForm({...form, price:+e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <input placeholder="Badge (es. New)" value={form.badge} onChange={e => setForm({...form, badge:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <input placeholder="URL Immagine" value={form.image} onChange={e => setForm({...form, image:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <textarea placeholder="Descrizione" value={form.description} onChange={e => setForm({...form, description:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none col-span-2 text-white" rows={3} />
+        </div>
+        <div className="mt-4">
+          <p className="text-sm text-gray-400 mb-2">Specifiche tecniche</p>
+          <div className="flex gap-2 mb-2">
+            <input placeholder="Label" value={specInput.label} onChange={e => setSpecInput({...specInput, label:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none flex-1 text-white" />
+            <input placeholder="Valore" value={specInput.value} onChange={e => setSpecInput({...specInput, value:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none flex-1 text-white" />
+            <button onClick={addSpec} className="bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded-lg transition">+</button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {form.specs.map((s, i) => (
+              <span key={i} className="bg-gray-800 text-sm px-3 py-1 rounded-full text-white">
+                {s.label}: {s.value}
+                <button onClick={() => setForm({...form, specs:form.specs.filter((_,j)=>j!==i)})} className="ml-1 text-red-400">×</button>
+              </span>
+            ))}
+          </div>
+        </div>
+        <button onClick={handleSubmit} className="mt-6 bg-purple-600 hover:bg-purple-500 px-8 py-3 rounded-lg font-semibold transition">
+          {editId ? 'Salva Modifiche' : 'Aggiungi Prodotto'}
+        </button>
+        {editId && <button onClick={() => { setEditId(null); setForm({ name:'', tagline:'', category:'Audio', price:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' }); }} className="mt-6 ml-4 bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-lg font-semibold transition">Annulla</button>}
+      </div>
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Prodotti ({products.length})</h2>
+        {products.length === 0 ? <p className="text-gray-500">Nessun prodotto ancora.</p> : (
+          <div className="grid grid-cols-1 gap-4">
+            {products.map(p => (
+              <div key={p.id} className="bg-gray-900 rounded-xl p-4 flex justify-between items-center">
+                <div>
+                  <p className="font-semibold">{p.name} <span className="text-purple-400">€{p.price}</span></p>
+                  <p className="text-sm text-gray-400">{p.category} · {p.tagline}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={() => handleEdit(p)} className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition">Modifica</button>
+                  <button onClick={() => handleDelete(p.id)} className="bg-red-900 hover:bg-red-800 px-4 py-2 rounded-lg text-sm transition">Elimina</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ProductsPage({ onAddToCart }) {
+  const [products, setProducts] = useState([]);
+  const [category, setCategory] = useState('All');
+
+  useEffect(() => { setProducts(getProducts()); }, []);
+
+  const categories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
+  const filtered = category === 'All' ? products : products.filter(p => p.category === category);
+
+  if (products.length === 0) return (
+    <div className="text-center py-20">
+      <h2 className="text-4xl font-bold text-white">Products</h2>
+      <p className="text-gray-400 mt-4">Nessun prodotto ancora. Aggiungili dal pannello Admin!</p>
+    </div>
+  );
+
+  return (
+    <div className="py-10">
+      <h2 className="text-4xl font-bold text-white mb-6">Products</h2>
+      <div className="flex gap-3 mb-8 flex-wrap">
+        {categories.map(c => (
+          <button key={c} onClick={() => setCategory(c)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition ${category === c ? 'bg-purple-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}>
+            {c}
+          </button>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filtered.map(p => (
+          <div key={p.id} className="bg-gray-900 rounded-2xl overflow-hidden hover:ring-1 hover:ring-purple-500 transition">
+            {p.image
+              ? <img src={p.image} alt={p.name} className="w-full h-48 object-cover" />
+              : <div className="w-full h-48 bg-gray-800 flex items-center justify-center text-gray-600 text-4xl">📦</div>}
+            <div className="p-5">
+              {p.badge && <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full mb-2 inline-block">{p.badge}</span>}
+              <h3 className="text-white font-bold text-lg">{p.name}</h3>
+              <p className="text-gray-400 text-sm mb-3">{p.tagline}</p>
+              <p className="text-purple-400 font-bold text-xl mb-4">€{p.price}</p>
+              <button onClick={() => onAddToCart(p)} className="w-full bg-purple-600 hover:bg-purple-500 text-white py-2 rounded-lg font-semibold transition">
+                Aggiungi al carrello
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [page, setPage] = useState('home');
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (p) => setCart(prev => [...prev, p]);
+  const total = cart.reduce((sum, p) => sum + p.price, 0);
+
+  if (page === 'admin') return <AdminPage onBack={() => setPage('home')} />;
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-white">
+      <nav className="fixed top-0 w-full z-50 bg-gray-950/80 backdrop-blur border-b border-gray-800 px-6 py-4 flex justify-between items-center">
+        <span className="text-xl font-bold tracking-tight cursor-pointer" onClick={() => setPage('home')}>
+          NEXUS<span className="text-purple-400">TECH</span>
+        </span>
+        <div className="flex gap-6 text-sm text-gray-400">
+          <button onClick={() => setPage('home')} className="hover:text-white transition">Home</button>
+          <button onClick={() => setPage('products')} className="hover:text-white transition">Products</button>
+          <button onClick={() => setPage('cart')} className="hover:text-white transition">
+            Cart {cart.length > 0 && <span className="ml-1 bg-purple-600 text-white text-xs px-1.5 py-0.5 rounded-full">{cart.length}</span>}
+          </button>
+          <button onClick={() => setPage('admin')} className="hover:text-purple-400 transition">Admin</button>
+        </div>
+      </nav>
+      <main className="pt-20 px-6 max-w-6xl mx-auto">
+        {page === 'home' && (
+          <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
+            <h1 className="text-6xl font-bold mb-4">The Future of <span className="text-purple-400">Tech</span></h1>
+            <p className="text-gray-400 text-xl mb-8">Premium devices for those who demand more.</p>
+            <button onClick={() => setPage('products')} className="bg-purple-600 hover:bg-purple-500 px-8 py-3 rounded-full font-semibold transition">
+              Shop Now
+            </button>
+          </div>
+        )}
+        {page === 'products' && <ProductsPage onAddToCart={addToCart} />}
+        {page === 'cart' && (
+          <div className="py-10">
+            <h2 className="text-4xl font-bold mb-6">Cart</h2>
+            {cart.length === 0 ? <p className="text-gray-400">Il carrello è vuoto.</p> : (
+              <>
+                <div className="space-y-4 mb-6">
+                  {cart.map((p, i) => (
+                    <div key={i} className="bg-gray-900 rounded-xl p-4 flex justify-between items-center">
+                      <div>
+                        <p className="font-semibold">{p.name}</p>
+                        <p className="text-sm text-gray-400">{p.category}</p>
+                      </div>
+                      <p className="text-purple-400 font-bold">€{p.price}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="bg-gray-900 rounded-xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xl font-bold">Totale</span>
+                    <span className="text-purple-400 text-2xl font-bold">€{total}</span>
+                  </div>
+                  <button className="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-lg font-semibold transition">
+                    Procedi al pagamento
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
