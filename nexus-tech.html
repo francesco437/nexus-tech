@@ -68,6 +68,22 @@
 
     .fade-in { animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+
+    .checkout-step { opacity:0.4; transition:all 0.3s; }
+    .checkout-step.active { opacity:1; }
+    .checkout-step.done { opacity:0.7; }
+    .step-number { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; }
+    .step-number.active { background:linear-gradient(135deg,#7c3aed,#9333ea); color:white; }
+    .step-number.done { background:rgba(16,185,129,0.2); border:1px solid rgba(16,185,129,0.5); color:#10b981; }
+    .step-number.pending { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#6b7280; }
+    .form-input { width:100%; padding:12px 16px; border-radius:12px; outline:none; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; transition:all 0.2s; }
+    .form-input:focus { border-color:rgba(139,92,246,0.6); background:rgba(139,92,246,0.05); }
+    .form-label { font-size:13px; color:#9ca3af; margin-bottom:6px; display:block; }
+    .shipping-option { padding:16px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); cursor:pointer; transition:all 0.2s; }
+    .shipping-option:hover { border-color:rgba(139,92,246,0.4); }
+    .shipping-option.selected { border-color:rgba(139,92,246,0.8); background:rgba(139,92,246,0.08); }
+    .order-success { animation: successPop 0.5s ease; }
+    @keyframes successPop { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
   </style>
 </head>
 <body>
@@ -83,6 +99,21 @@ function saveProducts(p) { localStorage.setItem('nexus-products', JSON.stringify
 function addProduct(p) { const ps = getProducts(); ps.push(p); saveProducts(ps); }
 function deleteProduct(id) { saveProducts(getProducts().filter(p => p.id !== id)); }
 function updateProduct(u) { saveProducts(getProducts().map(p => p.id === u.id ? u : p)); }
+
+function getOrders() {
+  try { return JSON.parse(localStorage.getItem('nexus-orders') || '[]'); } catch { return []; }
+}
+function saveOrder(order) {
+  const orders = getOrders();
+  orders.unshift(order);
+  localStorage.setItem('nexus-orders', JSON.stringify(orders));
+}
+
+const SHIPPING_METHODS = [
+  { id:'standard', name:'Spedizione Standard', desc:'5-7 giorni lavorativi', price:0, icon:'📦' },
+  { id:'express', name:'Spedizione Express', desc:'2-3 giorni lavorativi', price:9.99, icon:'⚡' },
+  { id:'overnight', name:'Consegna Overnight', desc:'Giorno lavorativo successivo', price:19.99, icon:'🚀' },
+];
 
 const getBadgeClass = (b) => {
   if (!b) return '';
@@ -370,6 +401,324 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
   );
 }
 
+function CheckoutPage({ cart, onOrderComplete, onBack }) {
+  const [step, setStep] = useState(1); // 1=info, 2=shipping, 3=payment, 4=success
+  const [coupon, setCoupon] = useState('');
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [shippingMethod, setShippingMethod] = useState('standard');
+  const [form, setForm] = useState({
+    firstName:'', lastName:'', email:'', phone:'',
+    address:'', city:'', zip:'', country:'Italia',
+    sameAsBilling:true,
+    billingAddress:'', billingCity:'', billingZip:'',
+    cardName:'', cardNumber:'', cardExpiry:'', cardCvv:'',
+  });
+
+  const subtotal = cart.reduce((sum,p) => sum + p.price, 0);
+  const discount = couponApplied ? subtotal * 0.1 : 0;
+  const shipping = SHIPPING_METHODS.find(m => m.id === shippingMethod)?.price || 0;
+  const total = subtotal - discount + shipping;
+
+  const updateForm = (key, val) => setForm(prev => ({...prev, [key]:val}));
+
+  const applyCoupon = () => {
+    if (coupon.toUpperCase() === 'NEXUS10') { setCouponApplied(true); }
+    else { alert('Coupon non valido. Prova NEXUS10!'); }
+  };
+
+  const placeOrder = () => {
+    const order = {
+      id: 'NX' + Date.now().toString().slice(-8),
+      date: new Date().toISOString(),
+      status: 'confermato',
+      items: cart,
+      customer: { name: form.firstName + ' ' + form.lastName, email: form.email, phone: form.phone },
+      address: { address: form.address, city: form.city, zip: form.zip, country: form.country },
+      shipping: SHIPPING_METHODS.find(m => m.id === shippingMethod),
+      subtotal, discount, shippingCost: shipping, total,
+      timeline: [
+        { status:'Ordine confermato', date: new Date().toISOString(), done:true },
+        { status:'In preparazione', date:null, done:false },
+        { status:'Spedito', date:null, done:false },
+        { status:'In consegna', date:null, done:false },
+        { status:'Consegnato', date:null, done:false },
+      ]
+    };
+    saveOrder(order);
+    setStep(4);
+  };
+
+  const InputField = ({ label, field, type='text', placeholder='' }) => (
+    <div>
+      <label className="form-label">{label}</label>
+      <input type={type} placeholder={placeholder} value={form[field]}
+        onChange={e => updateForm(field, e.target.value)}
+        className="form-input" />
+    </div>
+  );
+
+  if (step === 4) return (
+    <div className="min-h-screen flex items-center justify-center px-6 pt-28">
+      <div className="text-center order-success max-w-md">
+        <div className="text-8xl mb-6">🎉</div>
+        <h1 className="text-4xl font-black text-white mb-3">Ordine confermato!</h1>
+        <p className="text-gray-400 mb-2">Grazie per il tuo acquisto, <span className="text-white font-semibold">{form.firstName}</span>!</p>
+        <p className="text-gray-500 text-sm mb-8">Riceverai una conferma a <span className="text-purple-400">{form.email}</span></p>
+        <div className="glass rounded-2xl p-6 mb-8 text-left">
+          <h3 className="font-bold text-white mb-4">Riepilogo ordine</h3>
+          {cart.map((p,i) => (
+            <div key={i} className="flex justify-between text-sm mb-2">
+              <span className="text-gray-400">{p.name}</span>
+              <span className="text-white">€{p.price}</span>
+            </div>
+          ))}
+          <div className="border-t border-white/10 mt-3 pt-3 flex justify-between font-bold">
+            <span className="text-white">Totale pagato</span>
+            <span className="text-purple-400 text-lg">€{total.toFixed(2)}</span>
+          </div>
+        </div>
+        <div className="flex gap-3">
+          <button onClick={() => onOrderComplete()} className="btn-primary flex-1 py-3 rounded-xl font-semibold text-white">
+            Continua lo shopping
+          </button>
+          <button onClick={() => onOrderComplete('account')} className="glass flex-1 py-3 rounded-xl font-semibold text-white hover:bg-white/10 transition">
+            I miei ordini
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="max-w-6xl mx-auto px-6 pt-28 pb-20 fade-in">
+      <button onClick={onBack} className="text-gray-400 hover:text-white transition flex items-center gap-2 mb-8">← Torna al carrello</button>
+      <h1 className="text-4xl font-black text-white mb-10">Checkout</h1>
+
+      {/* Steps indicator */}
+      <div className="flex items-center gap-4 mb-10">
+        {[['1','Informazioni'],['2','Spedizione'],['3','Pagamento']].map(([n,label],i) => (
+          <React.Fragment key={n}>
+            <div className={`flex items-center gap-3 ${step===i+1?'opacity-100':step>i+1?'opacity-70':'opacity-40'}`}>
+              <div className={`step-number ${step===i+1?'active':step>i+1?'done':'pending'}`}>
+                {step>i+1 ? '✓' : n}
+              </div>
+              <span className={`font-semibold text-sm ${step===i+1?'text-white':'text-gray-500'}`}>{label}</span>
+            </div>
+            {i < 2 && <div className="flex-1 h-px" style={{background:'rgba(255,255,255,0.1)'}}></div>}
+          </React.Fragment>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-3 gap-8">
+        {/* Left - Form */}
+        <div className="col-span-2">
+
+          {/* Step 1 - Info */}
+          {step === 1 && (
+            <div className="fade-in">
+              <div className="glass rounded-2xl p-6 mb-6">
+                <h2 className="text-xl font-bold text-white mb-6">Dati personali</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <InputField label="Nome" field="firstName" placeholder="Mario" />
+                  <InputField label="Cognome" field="lastName" placeholder="Rossi" />
+                  <InputField label="Email" field="email" type="email" placeholder="mario@email.com" />
+                  <InputField label="Telefono" field="phone" placeholder="+39 333 123 4567" />
+                </div>
+              </div>
+
+              <div className="glass rounded-2xl p-6 mb-6">
+                <h2 className="text-xl font-bold text-white mb-6">Indirizzo di spedizione</h2>
+                <div className="grid grid-cols-1 gap-4">
+                  <InputField label="Indirizzo" field="address" placeholder="Via Roma 1" />
+                  <div className="grid grid-cols-3 gap-4">
+                    <InputField label="Città" field="city" placeholder="Milano" />
+                    <InputField label="CAP" field="zip" placeholder="20100" />
+                    <div>
+                      <label className="form-label">Paese</label>
+                      <select value={form.country} onChange={e => updateForm('country', e.target.value)} className="form-input" style={{background:'rgba(15,15,25,0.95)'}}>
+                        {['Italia','Francia','Germania','Spagna','UK'].map(c => <option key={c}>{c}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="glass rounded-2xl p-6 mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-white">Indirizzo di fatturazione</h2>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" checked={form.sameAsBilling} onChange={e => updateForm('sameAsBilling', e.target.checked)} className="w-4 h-4 accent-purple-600" />
+                    <span className="text-gray-400 text-sm">Stesso della spedizione</span>
+                  </label>
+                </div>
+                {!form.sameAsBilling && (
+                  <div className="grid grid-cols-1 gap-4">
+                    <InputField label="Indirizzo fatturazione" field="billingAddress" placeholder="Via Roma 1" />
+                    <div className="grid grid-cols-2 gap-4">
+                      <InputField label="Città" field="billingCity" placeholder="Milano" />
+                      <InputField label="CAP" field="billingZip" placeholder="20100" />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button onClick={() => {
+                if (!form.firstName || !form.email || !form.address) return alert('Compila tutti i campi obbligatori!');
+                setStep(2);
+              }} className="btn-primary w-full py-4 rounded-xl font-bold text-white text-lg">
+                Continua alla spedizione →
+              </button>
+            </div>
+          )}
+
+          {/* Step 2 - Shipping */}
+          {step === 2 && (
+            <div className="fade-in">
+              <div className="glass rounded-2xl p-6 mb-6">
+                <h2 className="text-xl font-bold text-white mb-6">Metodo di spedizione</h2>
+                <div className="space-y-3">
+                  {SHIPPING_METHODS.map(method => (
+                    <div key={method.id} onClick={() => setShippingMethod(method.id)}
+                      className={`shipping-option ${shippingMethod===method.id?'selected':''}`}>
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{method.icon}</span>
+                          <div>
+                            <p className="font-semibold text-white">{method.name}</p>
+                            <p className="text-gray-400 text-sm">{method.desc}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-white">{method.price === 0 ? 'Gratis' : `€${method.price.toFixed(2)}`}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Coupon */}
+              <div className="glass rounded-2xl p-6 mb-6">
+                <h2 className="text-xl font-bold text-white mb-4">Codice sconto</h2>
+                <div className="flex gap-3">
+                  <input placeholder="Inserisci coupon (prova NEXUS10)" value={coupon}
+                    onChange={e => setCoupon(e.target.value)}
+                    className="form-input flex-1" />
+                  <button onClick={applyCoupon} className={`px-6 py-3 rounded-xl font-semibold text-white transition ${couponApplied?'bg-green-600':'btn-primary'}`}>
+                    {couponApplied ? '✓ Applicato!' : 'Applica'}
+                  </button>
+                </div>
+                {couponApplied && <p className="text-green-400 text-sm mt-2">✓ Sconto del 10% applicato!</p>}
+              </div>
+
+              <div className="flex gap-3">
+                <button onClick={() => setStep(1)} className="glass px-8 py-4 rounded-xl font-bold text-white hover:bg-white/10 transition">← Indietro</button>
+                <button onClick={() => setStep(3)} className="btn-primary flex-1 py-4 rounded-xl font-bold text-white text-lg">Continua al pagamento →</button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3 - Payment */}
+          {step === 3 && (
+            <div className="fade-in">
+              <div className="glass rounded-2xl p-6 mb-6">
+                <h2 className="text-xl font-bold text-white mb-2">Pagamento</h2>
+                <p className="text-gray-500 text-sm mb-6">I tuoi dati di pagamento sono protetti con crittografia SSL.</p>
+                <div className="rounded-xl p-4 mb-6" style={{background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.2)'}}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-purple-400">🔒</span>
+                    <span className="text-purple-300 text-sm font-semibold">Pagamento sicuro simulato</span>
+                  </div>
+                  <p className="text-gray-500 text-xs">Questa è una demo. Nessun addebito reale verrà effettuato. Integrazione Stripe disponibile nella versione produzione.</p>
+                </div>
+                <div className="grid grid-cols-1 gap-4">
+                  <InputField label="Nome sulla carta" field="cardName" placeholder="Mario Rossi" />
+                  <div>
+                    <label className="form-label">Numero carta</label>
+                    <input placeholder="1234 5678 9012 3456" value={form.cardNumber}
+                      onChange={e => updateForm('cardNumber', e.target.value.replace(/\D/g,'').replace(/(\d{4})/g,'$1 ').trim().slice(0,19))}
+                      className="form-input" maxLength="19" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="form-label">Scadenza</label>
+                      <input placeholder="MM/AA" value={form.cardExpiry}
+                        onChange={e => updateForm('cardExpiry', e.target.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1/$2').slice(0,5))}
+                        className="form-input" maxLength="5" />
+                    </div>
+                    <div>
+                      <label className="form-label">CVV</label>
+                      <input placeholder="123" value={form.cardCvv} type="password"
+                        onChange={e => updateForm('cardCvv', e.target.value.slice(0,4))}
+                        className="form-input" maxLength="4" />
+                    </div>
+                  </div>
+                </div>
+                {/* Payment methods icons */}
+                <div className="flex gap-2 mt-4">
+                  {['💳 Visa','💳 Mastercard','💳 Amex','🍎 Apple Pay','🔵 PayPal'].map(m => (
+                    <span key={m} className="glass text-xs px-2 py-1 rounded-lg text-gray-400">{m}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button onClick={() => setStep(2)} className="glass px-8 py-4 rounded-xl font-bold text-white hover:bg-white/10 transition">← Indietro</button>
+                <button onClick={() => {
+                  if (!form.cardName || !form.cardNumber) return alert('Inserisci i dati della carta!');
+                  placeOrder();
+                }} className="btn-primary flex-1 py-4 rounded-xl font-bold text-white text-lg">
+                  🔒 Conferma ordine — €{total.toFixed(2)}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right - Order Summary */}
+        <div>
+          <div className="glass rounded-2xl p-6 sticky top-28">
+            <h2 className="text-lg font-bold text-white mb-4">Riepilogo ordine</h2>
+            <div className="space-y-3 mb-4">
+              {cart.map((p,i) => (
+                <div key={i} className="flex gap-3 items-center">
+                  {p.image && <img src={p.image} alt={p.name} className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm font-semibold truncate">{p.name}</p>
+                    <p className="text-gray-500 text-xs">{p.category}</p>
+                  </div>
+                  <span className="text-white font-semibold text-sm">€{p.price}</span>
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-white/10 pt-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Subtotale</span>
+                <span className="text-white">€{subtotal.toFixed(2)}</span>
+              </div>
+              {couponApplied && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-green-400">Sconto (10%)</span>
+                  <span className="text-green-400">-€{discount.toFixed(2)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Spedizione</span>
+                <span className="text-white">{shipping === 0 ? 'Gratis' : `€${shipping.toFixed(2)}`}</span>
+              </div>
+              <div className="flex justify-between font-bold text-lg border-t border-white/10 pt-2 mt-2">
+                <span className="text-white">Totale</span>
+                <span className="text-purple-400">€{total.toFixed(2)}</span>
+              </div>
+              <p className="text-gray-600 text-xs text-right">IVA inclusa</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function AdminPage({ onBack }) {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState('');
@@ -594,12 +943,42 @@ function App() {
 
   const addToCart = (p) => setCart(prev => [...prev, p]);
   const removeFromCart = (i) => setCart(prev => prev.filter((_,j) => j !== i));
+  const updateQty = (i, delta) => setCart(prev => {
+    const next = [...prev];
+    const newQty = (next.filter((_,j) => j === i).length) + delta;
+    if (newQty <= 0) return next.filter((_,j) => j !== i);
+    return next;
+  });
   const total = cart.reduce((sum,p) => sum + p.price, 0);
 
   const tickerItems = ['TIME · Best Invention 2026','WIRED · 10/10','Fast Company · Most Innovative','Wallpaper* · Design of the Year','T3 · Gadget of the Year','Engadget · Editor\'s Choice'];
   const stats = [{value:'2.4M+',label:'Utenti attivi'},{value:'84',label:'Paesi'},{value:'37',label:'Premi di design'},{value:'99.99%',label:'Uptime'}];
 
   if (page === 'admin') return <AdminPage onBack={() => setPage('home')} />;
+
+  if (page === 'checkout') return (
+    <div className="min-h-screen text-white" style={{background:'#0a0a0f'}}>
+      <div className="aurora-bg"><div className="aurora3"></div></div>
+      <nav className="fixed top-0 w-full z-50 px-6 py-4">
+        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
+            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold text-white">N</div>
+            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <span>🔒</span><span>Checkout sicuro</span>
+          </div>
+        </div>
+      </nav>
+      <div className="relative z-10">
+        <CheckoutPage
+          cart={cart}
+          onOrderComplete={(dest) => { setCart([]); setPage(dest || 'home'); }}
+          onBack={() => setPage('cart')}
+        />
+      </div>
+    </div>
+  );
 
   if (currentProduct) return (
     <div className="min-h-screen text-white" style={{background:'#0a0a0f'}}>
@@ -620,7 +999,7 @@ function App() {
           </button>
         </div>
       </nav>
-      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} />}
+      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
       <div className="relative z-10">
         <ProductDetailPage
           product={currentProduct}
@@ -658,7 +1037,7 @@ function App() {
         </div>
       </nav>
 
-      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} />}
+      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
 
       <main className="relative z-10">
         {page === 'home' && (
@@ -754,7 +1133,7 @@ function App() {
   );
 }
 
-function CartDrawer({ cart, removeFromCart, total, onClose }) {
+function CartDrawer({ cart, removeFromCart, total, onClose, onCheckout }) {
   return (
     <div className="fixed top-0 right-0 h-full w-96 z-50 glass-dark p-6 overflow-y-auto" style={{zIndex:100}}>
       <div className="flex justify-between items-center mb-6">
@@ -780,9 +1159,11 @@ function CartDrawer({ cart, removeFromCart, total, onClose }) {
           <div className="glass rounded-xl p-4">
             <div className="flex justify-between mb-4">
               <span className="font-bold text-white">Totale</span>
-              <span className="text-purple-400 font-bold text-xl">€{total}</span>
+              <span className="text-purple-400 font-bold text-xl">€{total.toFixed(2)}</span>
             </div>
-            <button className="btn-primary w-full py-3 rounded-xl font-semibold text-white">Checkout</button>
+            <button onClick={onCheckout} className="btn-primary w-full py-3 rounded-xl font-semibold text-white">
+              Procedi al checkout →
+            </button>
           </div>
         </>
       )}
