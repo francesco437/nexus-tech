@@ -8,157 +8,53 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-    * { font-family: 'Inter', sans-serif; }
-    body { background: #0a0a0f; }
-
-    .aurora-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .aurora-bg::before {
-      content: '';
-      position: absolute;
-      width: 800px; height: 800px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
-      top: -200px; left: -200px;
-      animation: aurora1 8s ease-in-out infinite alternate;
-    }
-    .aurora-bg::after {
-      content: '';
-      position: absolute;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(236,72,153,0.12) 0%, transparent 70%);
-      top: 100px; right: -100px;
-      animation: aurora2 10s ease-in-out infinite alternate;
-    }
-    .aurora3 {
-      position: absolute;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
-      bottom: 0; left: 50%;
-      animation: aurora3 12s ease-in-out infinite alternate;
-    }
-    @keyframes aurora1 { from { transform: translate(0,0) scale(1); } to { transform: translate(100px,50px) scale(1.2); } }
-    @keyframes aurora2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-80px,80px) scale(1.3); } }
-    @keyframes aurora3 { from { transform: translateX(-50%) scale(1); } to { transform: translateX(-30%) scale(1.2); } }
-
-    .glass {
-      background: rgba(255,255,255,0.04);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .glass-dark {
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .product-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: all 0.3s ease;
-    }
-    .product-card:hover {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(139,92,246,0.4);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(139,92,246,0.2);
-    }
-    .gradient-text {
-      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #ec4899 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, #7c3aed, #9333ea);
-      transition: all 0.3s ease;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #6d28d9, #7c3aed);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 25px rgba(124,58,237,0.4);
-    }
-    .badge-new { background: linear-gradient(135deg, #7c3aed, #9333ea); }
-    .badge-featured { background: linear-gradient(135deg, #0ea5e9, #6366f1); }
-    .badge-hot { background: linear-gradient(135deg, #f59e0b, #ef4444); }
-    .badge-limited { background: linear-gradient(135deg, #10b981, #0ea5e9); }
-
-    .ticker {
-      animation: ticker 30s linear infinite;
-      white-space: nowrap;
-    }
-    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-    .nav-link { position: relative; }
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #7c3aed, #ec4899);
-      border-radius: 2px;
-    }
-  </style>
 </head>
-<body>
+<body class="bg-gray-950">
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect } = React;
+
 const ADMIN_PASSWORD = 'admin123';
 
 function getProducts() {
   const stored = localStorage.getItem('nexus-products');
   return stored ? JSON.parse(stored) : [];
 }
-function saveProducts(p) { localStorage.setItem('nexus-products', JSON.stringify(p)); }
-function addProduct(p) { const ps = getProducts(); ps.push(p); saveProducts(ps); }
-function deleteProduct(id) { saveProducts(getProducts().filter(p => p.id !== id)); }
-function updateProduct(u) { saveProducts(getProducts().map(p => p.id === u.id ? u : p)); }
-
-const badgeClass = (b) => {
-  if (!b) return '';
-  const bl = b.toLowerCase();
-  if (bl === 'new') return 'badge-new';
-  if (bl === 'featured') return 'badge-featured';
-  if (bl === 'hot') return 'badge-hot';
-  if (bl === 'limited') return 'badge-limited';
-  return 'badge-new';
-};
+function saveProducts(products) {
+  localStorage.setItem('nexus-products', JSON.stringify(products));
+}
+function addProduct(product) {
+  const products = getProducts();
+  products.push(product);
+  saveProducts(products);
+}
+function deleteProduct(id) {
+  saveProducts(getProducts().filter(p => p.id !== id));
+}
+function updateProduct(updated) {
+  saveProducts(getProducts().map(p => p.id === updated.id ? updated : p));
+}
 
 function AdminPage({ onBack }) {
   const [authed, setAuthed] = useState(false);
   const [password, setPassword] = useState('');
   const [products, setProducts] = useState([]);
-  const empty = { name:'', tagline:'', category:'Audio', price:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' };
-  const [form, setForm] = useState(empty);
+  const [form, setForm] = useState({ name:'', tagline:'', category:'Audio', price:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' });
   const [editId, setEditId] = useState(null);
   const [specInput, setSpecInput] = useState({ label:'', value:'' });
 
   useEffect(() => { if (authed) setProducts(getProducts()); }, [authed]);
 
   if (!authed) return (
-    <div className="min-h-screen flex items-center justify-center" style={{background:'#0a0a0f'}}>
-      <div className="aurora-bg"><div className="aurora3"></div></div>
-      <div className="glass rounded-3xl p-10 w-96 relative z-10">
-        <div className="text-center mb-8">
-          <h2 className="text-white text-3xl font-bold">Admin</h2>
-          <p className="text-gray-400 mt-2">Accedi al pannello di controllo</p>
-        </div>
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+      <div className="bg-gray-900 p-8 rounded-2xl w-80">
+        <h2 className="text-white text-2xl font-bold mb-6 text-center">Admin Login</h2>
         <input type="password" placeholder="Password" value={password}
           onChange={e => setPassword(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && password === ADMIN_PASSWORD && setAuthed(true)}
-          className="w-full px-4 py-3 rounded-xl mb-4 outline-none text-white border border-white/10"
-          style={{background:'rgba(255,255,255,0.05)'}} />
+          className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg mb-4 outline-none" />
         <button onClick={() => password === ADMIN_PASSWORD ? setAuthed(true) : alert('Password errata!')}
-          className="btn-primary w-full text-white py-3 rounded-xl font-semibold">
+          className="w-full bg-purple-600 hover:bg-purple-500 text-white py-3 rounded-lg font-semibold transition">
           Accedi
         </button>
       </div>
@@ -167,88 +63,80 @@ function AdminPage({ onBack }) {
 
   const handleSubmit = () => {
     if (!form.name || !form.price) return alert('Nome e prezzo obbligatori!');
-    if (editId) updateProduct({ ...form, id: editId });
-    else addProduct({ ...form, id: crypto.randomUUID() });
+    if (editId) { updateProduct({ ...form, id: editId }); }
+    else { addProduct({ ...form, id: crypto.randomUUID() }); }
     setProducts(getProducts());
-    setForm(empty);
+    setForm({ name:'', tagline:'', category:'Audio', price:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' });
     setEditId(null);
   };
 
+  const handleEdit = (p) => { setEditId(p.id); setForm({ ...p }); };
+  const handleDelete = (id) => { if (confirm('Eliminare?')) { deleteProduct(id); setProducts(getProducts()); } };
+  const addSpec = () => {
+    if (specInput.label && specInput.value) {
+      setForm({ ...form, specs: [...form.specs, specInput] });
+      setSpecInput({ label:'', value:'' });
+    }
+  };
+
   return (
-    <div className="min-h-screen text-white p-6" style={{background:'#0a0a0f'}}>
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <button onClick={onBack} className="text-gray-400 hover:text-white transition glass px-4 py-2 rounded-xl">← Torna al sito</button>
-          <h1 className="text-3xl font-bold">Admin <span className="gradient-text">Panel</span></h1>
+    <div className="min-h-screen bg-gray-950 text-white p-6">
+      <div className="flex items-center gap-4 mb-8">
+        <button onClick={onBack} className="text-gray-400 hover:text-white transition">← Torna al sito</button>
+        <h1 className="text-3xl font-bold">Admin <span className="text-purple-400">Panel</span></h1>
+      </div>
+      <div className="bg-gray-900 rounded-2xl p-6 mb-10">
+        <h2 className="text-xl font-semibold mb-4">{editId ? 'Modifica Prodotto' : 'Aggiungi Prodotto'}</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <input placeholder="Nome" value={form.name} onChange={e => setForm({...form, name:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <input placeholder="Tagline" value={form.tagline} onChange={e => setForm({...form, tagline:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <select value={form.category} onChange={e => setForm({...form, category:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white">
+            {['Audio','Wearables','Computing','Vision','Home','Gaming'].map(c => <option key={c}>{c}</option>)}
+          </select>
+          <input placeholder="Prezzo (€)" type="number" value={form.price} onChange={e => setForm({...form, price:+e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <input placeholder="Badge (es. New)" value={form.badge} onChange={e => setForm({...form, badge:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <input placeholder="URL Immagine" value={form.image} onChange={e => setForm({...form, image:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none text-white" />
+          <textarea placeholder="Descrizione" value={form.description} onChange={e => setForm({...form, description:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none col-span-2 text-white" rows={3} />
         </div>
-        <div className="glass rounded-2xl p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">{editId ? 'Modifica Prodotto' : 'Aggiungi Prodotto'}</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {[['Nome','name','text'],['Tagline','tagline','text'],['Prezzo (€)','price','number'],['Badge (New/Featured/Hot/Limited)','badge','text'],['URL Immagine','image','text']].map(([ph,key,type]) => (
-              <input key={key} placeholder={ph} type={type} value={form[key]}
-                onChange={e => setForm({...form, [key]: type==='number' ? +e.target.value : e.target.value})}
-                className="px-4 py-2 rounded-xl outline-none text-white border border-white/10"
-                style={{background:'rgba(255,255,255,0.05)'}} />
+        <div className="mt-4">
+          <p className="text-sm text-gray-400 mb-2">Specifiche tecniche</p>
+          <div className="flex gap-2 mb-2">
+            <input placeholder="Label" value={specInput.label} onChange={e => setSpecInput({...specInput, label:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none flex-1 text-white" />
+            <input placeholder="Valore" value={specInput.value} onChange={e => setSpecInput({...specInput, value:e.target.value})} className="bg-gray-800 px-4 py-2 rounded-lg outline-none flex-1 text-white" />
+            <button onClick={addSpec} className="bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded-lg transition">+</button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {form.specs.map((s, i) => (
+              <span key={i} className="bg-gray-800 text-sm px-3 py-1 rounded-full text-white">
+                {s.label}: {s.value}
+                <button onClick={() => setForm({...form, specs:form.specs.filter((_,j)=>j!==i)})} className="ml-1 text-red-400">×</button>
+              </span>
             ))}
-            <select value={form.category} onChange={e => setForm({...form, category:e.target.value})}
-              className="px-4 py-2 rounded-xl outline-none text-white border border-white/10"
-              style={{background:'rgba(15,15,25,0.9)'}}>
-              {['Audio','Wearables','Computing','Vision','Home','Gaming'].map(c => <option key={c}>{c}</option>)}
-            </select>
-            <textarea placeholder="Descrizione" value={form.description} onChange={e => setForm({...form, description:e.target.value})}
-              className="px-4 py-2 rounded-xl outline-none col-span-2 text-white border border-white/10"
-              style={{background:'rgba(255,255,255,0.05)'}} rows={3} />
-          </div>
-          <div className="mt-4">
-            <p className="text-sm text-gray-400 mb-2">Specifiche tecniche</p>
-            <div className="flex gap-2 mb-2">
-              <input placeholder="Label" value={specInput.label} onChange={e => setSpecInput({...specInput, label:e.target.value})}
-                className="px-4 py-2 rounded-xl outline-none flex-1 text-white border border-white/10"
-                style={{background:'rgba(255,255,255,0.05)'}} />
-              <input placeholder="Valore" value={specInput.value} onChange={e => setSpecInput({...specInput, value:e.target.value})}
-                className="px-4 py-2 rounded-xl outline-none flex-1 text-white border border-white/10"
-                style={{background:'rgba(255,255,255,0.05)'}} />
-              <button onClick={() => { if(specInput.label&&specInput.value){setForm({...form,specs:[...form.specs,specInput]});setSpecInput({label:'',value:''});} }}
-                className="btn-primary px-4 py-2 rounded-xl text-white">+</button>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {form.specs.map((s,i) => (
-                <span key={i} className="glass text-sm px-3 py-1 rounded-full text-white">
-                  {s.label}: {s.value}
-                  <button onClick={() => setForm({...form,specs:form.specs.filter((_,j)=>j!==i)})} className="ml-2 text-red-400">×</button>
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="flex gap-3 mt-6">
-            <button onClick={handleSubmit} className="btn-primary px-8 py-3 rounded-xl font-semibold text-white">
-              {editId ? 'Salva Modifiche' : 'Aggiungi Prodotto'}
-            </button>
-            {editId && <button onClick={() => {setEditId(null);setForm(empty);}} className="glass px-8 py-3 rounded-xl font-semibold text-white">Annulla</button>}
           </div>
         </div>
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Prodotti ({products.length})</h2>
-          {products.length === 0 ? <p className="text-gray-500">Nessun prodotto ancora.</p> : (
-            <div className="space-y-3">
-              {products.map(p => (
-                <div key={p.id} className="glass rounded-xl p-4 flex justify-between items-center">
-                  <div className="flex items-center gap-4">
-                    {p.image && <img src={p.image} alt={p.name} className="w-14 h-14 rounded-lg object-cover" />}
-                    <div>
-                      <p className="font-semibold">{p.name} <span className="text-purple-400">€{p.price}</span></p>
-                      <p className="text-sm text-gray-400">{p.category} · {p.tagline}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button onClick={() => {setEditId(p.id);setForm({...p});}} className="glass px-4 py-2 rounded-lg text-sm hover:bg-white/10 transition">Modifica</button>
-                    <button onClick={() => {if(confirm('Eliminare?')){deleteProduct(p.id);setProducts(getProducts());}}} className="px-4 py-2 rounded-lg text-sm bg-red-500/20 hover:bg-red-500/30 transition text-red-400">Elimina</button>
-                  </div>
+        <button onClick={handleSubmit} className="mt-6 bg-purple-600 hover:bg-purple-500 px-8 py-3 rounded-lg font-semibold transition">
+          {editId ? 'Salva Modifiche' : 'Aggiungi Prodotto'}
+        </button>
+        {editId && <button onClick={() => { setEditId(null); setForm({ name:'', tagline:'', category:'Audio', price:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' }); }} className="mt-6 ml-4 bg-gray-700 hover:bg-gray-600 px-8 py-3 rounded-lg font-semibold transition">Annulla</button>}
+      </div>
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Prodotti ({products.length})</h2>
+        {products.length === 0 ? <p className="text-gray-500">Nessun prodotto ancora.</p> : (
+          <div className="grid grid-cols-1 gap-4">
+            {products.map(p => (
+              <div key={p.id} className="bg-gray-900 rounded-xl p-4 flex justify-between items-center">
+                <div>
+                  <p className="font-semibold">{p.name} <span className="text-purple-400">€{p.price}</span></p>
+                  <p className="text-sm text-gray-400">{p.category} · {p.tagline}</p>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+                <div className="flex gap-2">
+                  <button onClick={() => handleEdit(p)} className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition">Modifica</button>
+                  <button onClick={() => handleDelete(p.id)} className="bg-red-900 hover:bg-red-800 px-4 py-2 rounded-lg text-sm transition">Elimina</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -264,57 +152,35 @@ function ProductsPage({ onAddToCart }) {
   const filtered = category === 'All' ? products : products.filter(p => p.category === category);
 
   if (products.length === 0) return (
-    <div className="text-center py-32">
-      <div className="text-6xl mb-6">📦</div>
-      <h2 className="text-3xl font-bold text-white mb-3">Nessun prodotto</h2>
-      <p className="text-gray-400">Aggiungili dal pannello Admin!</p>
+    <div className="text-center py-20">
+      <h2 className="text-4xl font-bold text-white">Products</h2>
+      <p className="text-gray-400 mt-4">Nessun prodotto ancora. Aggiungili dal pannello Admin!</p>
     </div>
   );
 
   return (
     <div className="py-10">
-      <h2 className="text-4xl font-bold text-white mb-2">Shop</h2>
-      <p className="text-gray-400 mb-8">Premium technology for the next decade.</p>
+      <h2 className="text-4xl font-bold text-white mb-6">Products</h2>
       <div className="flex gap-3 mb-8 flex-wrap">
         {categories.map(c => (
           <button key={c} onClick={() => setCategory(c)}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition ${category === c ? 'btn-primary text-white' : 'glass text-gray-400 hover:text-white'}`}>
+            className={`px-4 py-2 rounded-full text-sm font-medium transition ${category === c ? 'bg-purple-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}>
             {c}
           </button>
         ))}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map(p => (
-          <div key={p.id} className="product-card rounded-2xl overflow-hidden">
-            <div className="relative">
-              {p.image
-                ? <img src={p.image} alt={p.name} className="w-full h-56 object-cover" />
-                : <div className="w-full h-56 flex items-center justify-center text-5xl" style={{background:'rgba(255,255,255,0.03)'}}>📦</div>}
-              <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-                {p.badge && <span className={`${badgeClass(p.badge)} text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide`}>{p.badge}</span>}
-                <span className="glass text-gray-300 text-xs px-3 py-1 rounded-full ml-auto">{p.category}</span>
-              </div>
-            </div>
+          <div key={p.id} className="bg-gray-900 rounded-2xl overflow-hidden hover:ring-1 hover:ring-purple-500 transition">
+            {p.image
+              ? <img src={p.image} alt={p.name} className="w-full h-48 object-cover" />
+              : <div className="w-full h-48 bg-gray-800 flex items-center justify-center text-gray-600 text-4xl">📦</div>}
             <div className="p-5">
-              <h3 className="text-white font-bold text-lg mb-1">{p.name}</h3>
-              <p className="text-gray-400 text-sm mb-4">{p.tagline}</p>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-white font-bold text-2xl">€{p.price}</span>
-                <div className="flex items-center gap-1">
-                  <span className="text-yellow-400 text-sm">★</span>
-                  <span className="text-gray-300 text-sm">{p.rating}</span>
-                  {p.reviews > 0 && <span className="text-gray-500 text-xs">({p.reviews})</span>}
-                </div>
-              </div>
-              {p.specs && p.specs.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {p.specs.slice(0,3).map((s,i) => (
-                    <span key={i} className="glass text-gray-300 text-xs px-2 py-1 rounded-lg">{s.label}: {s.value}</span>
-                  ))}
-                </div>
-              )}
-              <button onClick={() => onAddToCart(p)}
-                className="btn-primary w-full text-white py-2.5 rounded-xl font-semibold">
+              {p.badge && <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full mb-2 inline-block">{p.badge}</span>}
+              <h3 className="text-white font-bold text-lg">{p.name}</h3>
+              <p className="text-gray-400 text-sm mb-3">{p.tagline}</p>
+              <p className="text-purple-400 font-bold text-xl mb-4">€{p.price}</p>
+              <button onClick={() => onAddToCart(p)} className="w-full bg-purple-600 hover:bg-purple-500 text-white py-2 rounded-lg font-semibold transition">
                 Aggiungi al carrello
               </button>
             </div>
@@ -328,135 +194,65 @@ function ProductsPage({ onAddToCart }) {
 function App() {
   const [page, setPage] = useState('home');
   const [cart, setCart] = useState([]);
-  const [cartOpen, setCartOpen] = useState(false);
 
-  const addToCart = (p) => { setCart(prev => [...prev, p]); };
-  const removeFromCart = (i) => { setCart(prev => prev.filter((_,j) => j !== i)); };
+  const addToCart = (p) => setCart(prev => [...prev, p]);
   const total = cart.reduce((sum, p) => sum + p.price, 0);
-
-  const tickerItems = ['★ Design of the Year · Wallpaper*', '★ Gadget of the Year · T3', '★ Best Invention 2026 · TIME', '★ 10/10 · WIRED', '★ Most Innovative · Fast Company'];
 
   if (page === 'admin') return <AdminPage onBack={() => setPage('home')} />;
 
   return (
-    <div className="min-h-screen text-white relative" style={{background:'#0a0a0f'}}>
-      <div className="aurora-bg"><div className="aurora3"></div></div>
-
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-4">
-        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
-            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold">N</div>
-            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
-          </div>
-          <div className="flex gap-6 text-sm">
-            {['home','products','admin'].map(p => (
-              <button key={p} onClick={() => setPage(p)}
-                className={`nav-link capitalize font-medium transition ${page === p ? 'active text-white' : 'text-gray-400 hover:text-white'}`}>
-                {p === 'products' ? 'Shop' : p.charAt(0).toUpperCase() + p.slice(1)}
-              </button>
-            ))}
-          </div>
-          <button onClick={() => setCartOpen(!cartOpen)} className="glass px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition">
-            🛒 {cart.length > 0 && <span className="btn-primary text-white text-xs px-2 py-0.5 rounded-full">{cart.length}</span>}
+    <div className="min-h-screen bg-gray-950 text-white">
+      <nav className="fixed top-0 w-full z-50 bg-gray-950/80 backdrop-blur border-b border-gray-800 px-6 py-4 flex justify-between items-center">
+        <span className="text-xl font-bold tracking-tight cursor-pointer" onClick={() => setPage('home')}>
+          NEXUS<span className="text-purple-400">TECH</span>
+        </span>
+        <div className="flex gap-6 text-sm text-gray-400">
+          <button onClick={() => setPage('home')} className="hover:text-white transition">Home</button>
+          <button onClick={() => setPage('products')} className="hover:text-white transition">Products</button>
+          <button onClick={() => setPage('cart')} className="hover:text-white transition">
+            Cart {cart.length > 0 && <span className="ml-1 bg-purple-600 text-white text-xs px-1.5 py-0.5 rounded-full">{cart.length}</span>}
           </button>
+          <button onClick={() => setPage('admin')} className="hover:text-purple-400 transition">Admin</button>
         </div>
       </nav>
-
-      {/* Cart Drawer */}
-      {cartOpen && (
-        <div className="fixed top-0 right-0 h-full w-96 z-50 glass-dark p-6 overflow-y-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Cart ({cart.length})</h2>
-            <button onClick={() => setCartOpen(false)} className="text-gray-400 hover:text-white text-2xl">×</button>
-          </div>
-          {cart.length === 0 ? (
-            <div className="text-center py-20 text-gray-500">Il carrello è vuoto</div>
-          ) : (
-            <>
-              <div className="space-y-4 mb-6">
-                {cart.map((p, i) => (
-                  <div key={i} className="glass rounded-xl p-3 flex gap-3 items-center">
-                    {p.image && <img src={p.image} alt={p.name} className="w-14 h-14 rounded-lg object-cover" />}
-                    <div className="flex-1">
-                      <p className="font-semibold text-sm">{p.name}</p>
-                      <p className="text-purple-400 font-bold">€{p.price}</p>
-                    </div>
-                    <button onClick={() => removeFromCart(i)} className="text-gray-500 hover:text-red-400 transition">×</button>
-                  </div>
-                ))}
-              </div>
-              <div className="glass rounded-xl p-4">
-                <div className="flex justify-between mb-4">
-                  <span className="font-bold">Totale</span>
-                  <span className="text-purple-400 font-bold text-xl">€{total}</span>
-                </div>
-                <button className="btn-primary w-full py-3 rounded-xl font-semibold text-white">Checkout</button>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-
-      <main className="relative z-10">
+      <main className="pt-20 px-6 max-w-6xl mx-auto">
         {page === 'home' && (
-          <>
-            {/* Hero */}
-            <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24">
-              <div className="glass rounded-full px-4 py-2 text-sm text-purple-300 mb-8 inline-flex items-center gap-2">
-                ✦ Introducing Nexus N1 Silicon →
-              </div>
-              <h1 className="text-7xl font-black mb-4 leading-tight">
-                The future,<br/>
-                <span className="gradient-text">delivered today.</span>
-              </h1>
-              <p className="text-gray-400 text-xl mb-10 max-w-lg">Premium technology engineered for the next decade. Designed for those who demand more.</p>
-              <div className="flex gap-4">
-                <button onClick={() => setPage('products')} className="btn-primary px-8 py-4 rounded-2xl font-semibold text-white text-lg">
-                  Shop the collection →
-                </button>
-                <button className="glass px-8 py-4 rounded-2xl font-semibold text-white text-lg hover:bg-white/10 transition">
-                  Watch the keynote
-                </button>
-              </div>
-            </div>
-
-            {/* Ticker */}
-            <div className="border-y border-white/5 py-4 overflow-hidden" style={{background:'rgba(255,255,255,0.02)'}}>
-              <div className="ticker flex gap-16 text-gray-500 text-sm font-medium">
-                {[...tickerItems, ...tickerItems].map((item, i) => (
-                  <span key={i} className="whitespace-nowrap">{item}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Featured Products */}
-            {getProducts().length > 0 && (
-              <div className="max-w-6xl mx-auto px-6 py-20">
-                <h2 className="text-3xl font-bold mb-2">Featured Products</h2>
-                <p className="text-gray-400 mb-8">Handpicked for excellence.</p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {getProducts().slice(0,3).map(p => (
-                    <div key={p.id} className="product-card rounded-2xl overflow-hidden cursor-pointer" onClick={() => setPage('products')}>
-                      {p.image
-                        ? <img src={p.image} alt={p.name} className="w-full h-48 object-cover" />
-                        : <div className="w-full h-48 flex items-center justify-center text-4xl" style={{background:'rgba(255,255,255,0.03)'}}>📦</div>}
-                      <div className="p-4">
-                        <h3 className="font-bold text-white">{p.name}</h3>
-                        <p className="text-gray-400 text-sm">{p.tagline}</p>
-                        <p className="text-purple-400 font-bold mt-2">€{p.price}</p>
+          <div className="flex flex-col items-center justify-center min-h-[80vh] text-center">
+            <h1 className="text-6xl font-bold mb-4">The Future of <span className="text-purple-400">Tech</span></h1>
+            <p className="text-gray-400 text-xl mb-8">Premium devices for those who demand more.</p>
+            <button onClick={() => setPage('products')} className="bg-purple-600 hover:bg-purple-500 px-8 py-3 rounded-full font-semibold transition">
+              Shop Now
+            </button>
+          </div>
+        )}
+        {page === 'products' && <ProductsPage onAddToCart={addToCart} />}
+        {page === 'cart' && (
+          <div className="py-10">
+            <h2 className="text-4xl font-bold mb-6">Cart</h2>
+            {cart.length === 0 ? <p className="text-gray-400">Il carrello è vuoto.</p> : (
+              <>
+                <div className="space-y-4 mb-6">
+                  {cart.map((p, i) => (
+                    <div key={i} className="bg-gray-900 rounded-xl p-4 flex justify-between items-center">
+                      <div>
+                        <p className="font-semibold">{p.name}</p>
+                        <p className="text-sm text-gray-400">{p.category}</p>
                       </div>
+                      <p className="text-purple-400 font-bold">€{p.price}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+                <div className="bg-gray-900 rounded-xl p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xl font-bold">Totale</span>
+                    <span className="text-purple-400 text-2xl font-bold">€{total}</span>
+                  </div>
+                  <button className="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-lg font-semibold transition">
+                    Procedi al pagamento
+                  </button>
+                </div>
+              </>
             )}
-          </>
-        )}
-
-        {page === 'products' && (
-          <div className="max-w-6xl mx-auto px-6 pt-28">
-            <ProductsPage onAddToCart={(p) => { addToCart(p); setCartOpen(true); }} />
           </div>
         )}
       </main>
