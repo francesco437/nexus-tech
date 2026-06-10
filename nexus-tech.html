@@ -14,7 +14,6 @@
     * { font-family: 'Inter', sans-serif; }
     body { background: #0a0a0f; margin: 0; }
 
-    /* Aurora background */
     .aurora-bg { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
     .aurora-bg::before { content:''; position:absolute; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle,rgba(139,92,246,0.18) 0%,transparent 70%); top:-300px; left:-200px; animation:aurora1 10s ease-in-out infinite alternate; }
     .aurora-bg::after { content:''; position:absolute; width:700px; height:700px; border-radius:50%; background:radial-gradient(circle,rgba(236,72,153,0.14) 0%,transparent 70%); top:50px; right:-150px; animation:aurora2 12s ease-in-out infinite alternate; }
@@ -23,43 +22,9 @@
     @keyframes aurora2 { from{transform:translate(0,0) scale(1)} to{transform:translate(-80px,100px) scale(1.3)} }
     @keyframes aurora3 { from{transform:translateX(0) scale(1)} to{transform:translateX(80px) scale(1.2)} }
 
-    /* Glass styles */
     .glass { background:rgba(255,255,255,0.04); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.08); }
     .glass-dark { background:rgba(0,0,0,0.35); backdrop-filter:blur(24px); border:1px solid rgba(255,255,255,0.06); }
-
-    /* Product cards — Lovable style: dark almost-black bg */
-    .product-card {
-      background: #111118;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    .product-card:hover {
-      border-color: rgba(139,92,246,0.4);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(139,92,246,0.15);
-    }
-    .product-card-img {
-      background: #0d0d14;
-      aspect-ratio: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .product-card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .product-card:hover .product-card-img img { transform: scale(1.04); }
-
-    /* Glass card for other uses */
-    .glass-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); transition:all 0.3s ease; border-radius:16px; }
+    .glass-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); transition:all 0.3s ease; }
     .glass-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(139,92,246,0.5); transform:translateY(-6px); box-shadow:0 24px 60px rgba(139,92,246,0.2); }
 
     .gradient-text { background:linear-gradient(135deg,#fff 0%,#a78bfa 50%,#ec4899 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
@@ -73,16 +38,6 @@
     .badge-hot { background:linear-gradient(135deg,#f59e0b,#ef4444); }
     .badge-limited { background:linear-gradient(135deg,#10b981,#0ea5e9); }
 
-    /* Category badge on product card — pill style like Lovable */
-    .cat-pill {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.7);
-      font-size: 12px;
-      padding: 3px 10px;
-      border-radius: 100px;
-    }
-
     .ticker-wrap { overflow:hidden; }
     .ticker { display:inline-flex; gap:4rem; animation:ticker 35s linear infinite; white-space:nowrap; }
     @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -93,39 +48,7 @@
     .nav-link.active { color:white; }
     .nav-link.active::after { content:''; display:block; height:2px; background:linear-gradient(90deg,#7c3aed,#ec4899); border-radius:2px; margin-top:2px; }
 
-    /* Hero device section */
-    .hero-device-section {
-      position: relative;
-      width: 100%;
-      border-radius: 24px;
-      overflow: hidden;
-      background: linear-gradient(135deg, #0d0d1a 0%, #12071e 50%, #070d1a 100%);
-      min-height: 540px;
-    }
-    .hero-device-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-    .spec-card-float {
-      position: absolute;
-      background: rgba(15,10,30,0.85);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 14px;
-      padding: 12px 16px;
-      min-width: 140px;
-    }
-    .spec-card-icon {
-      width: 28px; height: 28px;
-      border-radius: 8px;
-      background: rgba(124,58,237,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
-      margin-bottom: 6px;
-    }
-
+    /* Product 360 rotation */
     .rotate-360 { animation: rotate360 8s linear infinite; }
     @keyframes rotate360 { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
 
@@ -136,6 +59,9 @@
 
     .tab-btn { transition: all 0.2s; border-bottom: 2px solid transparent; }
     .tab-btn.active { border-bottom-color: #7c3aed; color: white; }
+
+    .wishlist-btn { transition: all 0.2s; }
+    .wishlist-btn.active { color: #ec4899 !important; }
 
     input, textarea, select { color: white !important; }
     input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3) !important; }
@@ -158,15 +84,6 @@
     .shipping-option.selected { border-color:rgba(139,92,246,0.8); background:rgba(139,92,246,0.08); }
     .order-success { animation: successPop 0.5s ease; }
     @keyframes successPop { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
-
-    /* Newsletter section — Lovable large style */
-    .newsletter-section {
-      background: linear-gradient(135deg, rgba(88,28,235,0.35) 0%, rgba(168,50,180,0.25) 50%, rgba(236,72,153,0.2) 100%);
-      border: 1px solid rgba(139,92,246,0.2);
-      border-radius: 24px;
-      padding: 80px 40px;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -208,38 +125,22 @@ const getBadgeClass = (b) => {
   return 'badge-new';
 };
 
-const tickerItems = ['★ T3 Awards 2026','Design of the Year · Wallpaper*','Best in Class · WIRED','Engineered in Zürich','★ Fast Company Innovation Award','48h battery · N1 Silicon','★ iF Design Gold 2026'];
-const stats = [
-  { value:'2.4M+', label:'Clienti soddisfatti' },
-  { value:'84', label:'Paesi serviti' },
-  { value:'37', label:'Premi internazionali' },
-  { value:'99.99%', label:'Uptime garantito' },
-];
-
-/* ─── FOOTER ─── */
 function Footer({ setPage }) {
   return (
     <footer style={{borderTop:'1px solid rgba(255,255,255,0.06)',background:'rgba(0,0,0,0.3)'}} className="mt-20">
       <div className="max-w-6xl mx-auto px-6 py-16">
-
-        {/* Newsletter — Lovable large style */}
-        <div className="newsletter-section mb-16">
-          <h2 className="text-5xl font-black text-white mb-3">
-            Join <span className="gradient-text-pink">2.4 million</span> believers.
-          </h2>
-          <p className="text-gray-400 text-lg mb-10">Be the first to know about new products, drops and stories.</p>
-          <div className="flex gap-3 max-w-lg mx-auto">
-            <input type="email" placeholder="your@email.com"
-              className="flex-1 px-5 py-4 rounded-2xl outline-none text-base"
-              style={{background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.15)'}} />
-            <button className="btn-primary px-8 py-4 rounded-2xl font-semibold text-white text-base">Subscribe</button>
+        <div className="rounded-3xl p-10 text-center mb-16" style={{background:'linear-gradient(135deg,rgba(124,58,237,0.2),rgba(236,72,153,0.15))',border:'1px solid rgba(139,92,246,0.3)'}}>
+          <h2 className="text-4xl font-bold text-white mb-3">Unisciti a <span className="gradient-text-pink">2.4 milioni</span> di credenti.</h2>
+          <p className="text-gray-400 mb-8">Sii il primo a sapere di nuovi prodotti, lanci e storie.</p>
+          <div className="flex gap-3 max-w-md mx-auto">
+            <input type="email" placeholder="tuo@email.com" className="flex-1 px-4 py-3 rounded-2xl outline-none" style={{background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)'}} />
+            <button className="btn-primary px-6 py-3 rounded-2xl font-semibold text-white whitespace-nowrap">Iscriviti</button>
           </div>
         </div>
-
         <div className="grid grid-cols-4 gap-8 mb-12">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-xs font-bold text-white">N</div>
+              <div className="w-7 h-7 rounded-lg btn-primary flex items-center justify-center text-xs font-bold text-white">N</div>
               <span className="font-bold text-white">NEXUS<span className="gradient-text">TECH</span></span>
             </div>
             <p className="text-gray-500 text-sm">Tecnologia premium per il domani.</p>
@@ -279,7 +180,6 @@ function Footer({ setPage }) {
   );
 }
 
-/* ─── PRODUCT DETAIL ─── */
 function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurrentProduct }) {
   const [activeImg, setActiveImg] = useState(0);
   const [activeTab, setActiveTab] = useState('overview');
@@ -306,33 +206,59 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
         <button onClick={onBack} className="text-gray-400 hover:text-white transition flex items-center gap-2 mb-8">
           ← Torna al catalogo
         </button>
+
         <div className="grid grid-cols-2 gap-16 mb-20">
+          {/* Left - Images */}
           <div>
             <div className="relative rounded-3xl overflow-hidden mb-4" style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.08)',aspectRatio:'1'}}>
               {images.length > 0 ? (
-                <img src={images[activeImg]} alt={product.name}
+                <img
+                  src={images[activeImg]}
+                  alt={product.name}
                   className={`w-full h-full object-contain p-8 product-img-main ${is360 ? 'rotate-360' : ''}`}
-                  style={{transition:'all 0.4s'}} />
+                  style={{transition:'all 0.4s'}}
+                />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-8xl">📦</div>
               )}
-              <button onClick={() => setIs360(!is360)}
+              {/* 360 button */}
+              <button
+                onClick={() => setIs360(!is360)}
                 className={`absolute top-4 right-4 glass px-3 py-1.5 rounded-full text-xs font-bold transition ${is360 ? 'text-purple-400 border-purple-500' : 'text-gray-400'}`}
                 style={{border: is360 ? '1px solid rgba(139,92,246,0.6)' : undefined}}>
                 360°
               </button>
+              {/* Aurora glow */}
               <div className="absolute inset-0 pointer-events-none" style={{background:'radial-gradient(circle at 50% 50%,rgba(139,92,246,0.08) 0%,transparent 70%)'}}></div>
             </div>
+
+            {/* Thumbnails */}
+            {images.length > 1 && (
+              <div className="flex gap-3">
+                {images.map((img, i) => (
+                  <button key={i} onClick={() => setActiveImg(i)}
+                    className={`product-thumb rounded-xl overflow-hidden flex-1`}
+                    style={{border: `2px solid ${i === activeImg ? 'rgba(139,92,246,1)' : 'rgba(255,255,255,0.08)'}`, aspectRatio:'1', background:'rgba(255,255,255,0.03)'}}>
+                    <img src={img} alt="" className="w-full h-full object-contain p-2" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
+
+          {/* Right - Info */}
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-4">
-              <span className="cat-pill">{product.category}</span>
+              <span className="glass text-gray-300 text-sm px-3 py-1 rounded-full">{product.category}</span>
               {product.badge && (
                 <span className={`${getBadgeClass(product.badge)} text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}>{product.badge}</span>
               )}
             </div>
+
             <h1 className="text-4xl font-black text-white mb-2">{product.name}</h1>
             <p className="text-gray-400 text-lg mb-4">{product.tagline}</p>
+
+            {/* Rating */}
             <div className="flex items-center gap-3 mb-6">
               <div className="flex gap-1">
                 {[1,2,3,4,5].map(i => (
@@ -342,6 +268,8 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
               <span className="text-white font-semibold">{product.rating}</span>
               {product.reviews > 0 && <span className="text-gray-500 text-sm">{product.reviews.toLocaleString()} recensioni</span>}
             </div>
+
+            {/* Price */}
             <div className="flex items-center gap-4 mb-8">
               <span className="text-5xl font-black text-white">€{product.price}</span>
               <div className="flex flex-col">
@@ -350,6 +278,8 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
               </div>
               <span className="text-gray-600 text-sm">IVA inclusa</span>
             </div>
+
+            {/* Qty + Add to cart */}
             <div className="flex gap-3 mb-4">
               <div className="glass rounded-xl flex items-center">
                 <button onClick={() => setQty(Math.max(1,qty-1))} className="px-4 py-3 text-gray-400 hover:text-white transition text-lg">−</button>
@@ -361,20 +291,26 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
                 {added ? '✓ Aggiunto!' : 'Aggiungi al carrello'}
               </button>
             </div>
-            <button onClick={() => setWishlisted(!wishlisted)}
+
+            {/* Wishlist */}
+            <button
+              onClick={() => setWishlisted(!wishlisted)}
               className={`w-full py-3 rounded-xl font-semibold transition glass hover:bg-white/10 ${wishlisted ? 'text-pink-400' : 'text-gray-400'}`}>
               {wishlisted ? '♥ Nella wishlist' : '♡ Aggiungi alla wishlist'}
             </button>
+
+            {/* AI explained */}
             <div className="mt-6 rounded-2xl p-4" style={{background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.2)'}}>
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-purple-400 text-sm">✦</span>
                 <span className="text-purple-300 text-sm font-semibold">Nexus AI · spiegato</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">{product.description || 'Un prodotto straordinario progettato per chi non scende a compromessi.'}</p>
+              <p className="text-gray-400 text-sm leading-relaxed">{product.description || 'Un prodotto straordinario progettato per chi non scende a compromessi. Ingegnerizzato con materiali aerospace-grade e testato da professionisti.'}</p>
             </div>
           </div>
         </div>
 
+        {/* Tabs */}
         <div className="mb-8" style={{borderBottom:'1px solid rgba(255,255,255,0.08)'}}>
           <div className="flex gap-8">
             {['overview','specs','reviews'].map(tab => (
@@ -388,10 +324,11 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
 
         {activeTab === 'overview' && (
           <div className="fade-in text-gray-400 leading-relaxed max-w-2xl">
-            <p className="text-lg mb-4">{product.description || 'Un capolavoro ingegneristico realizzato con materiali aerospace-grade.'}</p>
-            <p>Progettato per durare un decennio, con software aggiornabile e componenti riparabili.</p>
+            <p className="text-lg mb-4">{product.description || 'Un capolavoro ingegneristico realizzato con materiali aerospace-grade. Ogni dettaglio è stato curato dal nostro team di 200 designer a Zurigo.'}</p>
+            <p>Progettato per durare un decennio, con software aggiornabile e componenti riparabili. La sostenibilità incontra le prestazioni premium.</p>
           </div>
         )}
+
         {activeTab === 'specs' && (
           <div className="fade-in">
             {product.specs && product.specs.length > 0 ? (
@@ -403,9 +340,12 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
                   </div>
                 ))}
               </div>
-            ) : <p className="text-gray-500">Nessuna specifica disponibile.</p>}
+            ) : (
+              <p className="text-gray-500">Nessuna specifica disponibile.</p>
+            )}
           </div>
         )}
+
         {activeTab === 'reviews' && (
           <div className="fade-in max-w-2xl">
             <div className="flex items-center gap-6 mb-8">
@@ -417,10 +357,11 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
                 <div className="text-gray-500 text-sm mt-1">{(product.reviews||0).toLocaleString()} recensioni</div>
               </div>
             </div>
+            {/* Sample reviews */}
             {[
-              { name:'Marco R.', stars:5, text:'Prodotto eccezionale, supera ogni aspettativa.' },
-              { name:'Sofia L.', stars:5, text:'Finalmente un prodotto che mantiene le promesse. Design sublime.' },
-              { name:'Luca M.', stars:4, text:'Ottimo acquisto, solo un piccolo miglioramento sulla custodia.' },
+              { name:'Marco R.', stars:5, text:'Prodotto eccezionale, supera ogni aspettativa. La qualità costruttiva è impressionante.' },
+              { name:'Sofia L.', stars:5, text:'Finalmente un prodotto che mantiene le promesse. Design sublime e prestazioni top.' },
+              { name:'Luca M.', stars:4, text:'Ottimo acquisto, solo un piccolo miglioramento sulla custodia e sarebbe perfetto.' },
             ].map((r,i) => (
               <div key={i} className="glass rounded-xl p-4 mb-3">
                 <div className="flex justify-between mb-2">
@@ -435,17 +376,18 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
           </div>
         )}
 
+        {/* Related products */}
         {related.length > 0 && (
           <div className="mt-16">
             <h2 className="text-2xl font-bold text-white mb-6">Potresti amare anche</h2>
             <div className="grid grid-cols-3 gap-6">
               {related.map(p => (
-                <div key={p.id} className="product-card" onClick={() => setCurrentProduct(p)}>
-                  <div className="product-card-img" style={{height:'180px'}}>
-                    {p.image ? <img src={p.image} alt={p.name} /> : <div className="text-4xl">📦</div>}
-                  </div>
+                <div key={p.id} className="glass-card rounded-2xl overflow-hidden cursor-pointer" onClick={() => setCurrentProduct(p)}>
+                  {p.image
+                    ? <img src={p.image} alt={p.name} className="w-full h-40 object-cover" />
+                    : <div className="w-full h-40 flex items-center justify-center text-4xl" style={{background:'rgba(255,255,255,0.02)'}}>📦</div>}
                   <div className="p-4">
-                    <p className="text-gray-500 text-xs mb-1">{p.category}</p>
+                    <p className="text-gray-400 text-xs mb-1">{p.category}</p>
                     <h3 className="font-bold text-white">{p.name}</h3>
                     <p className="text-white font-bold mt-1">€{p.price}</p>
                   </div>
@@ -459,9 +401,8 @@ function ProductDetailPage({ product, onAddToCart, onBack, allProducts, setCurre
   );
 }
 
-/* ─── CHECKOUT ─── */
 function CheckoutPage({ cart, onOrderComplete, onBack }) {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1); // 1=info, 2=shipping, 3=payment, 4=success
   const [coupon, setCoupon] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
   const [shippingMethod, setShippingMethod] = useState('standard');
@@ -477,11 +418,14 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
   const discount = couponApplied ? subtotal * 0.1 : 0;
   const shipping = SHIPPING_METHODS.find(m => m.id === shippingMethod)?.price || 0;
   const total = subtotal - discount + shipping;
+
   const updateForm = (key, val) => setForm(prev => ({...prev, [key]:val}));
+
   const applyCoupon = () => {
-    if (coupon.toUpperCase() === 'NEXUS10') setCouponApplied(true);
-    else alert('Coupon non valido. Prova NEXUS10!');
+    if (coupon.toUpperCase() === 'NEXUS10') { setCouponApplied(true); }
+    else { alert('Coupon non valido. Prova NEXUS10!'); }
   };
+
   const placeOrder = () => {
     const order = {
       id: 'NX' + Date.now().toString().slice(-8),
@@ -508,7 +452,8 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
     <div>
       <label className="form-label">{label}</label>
       <input type={type} placeholder={placeholder} value={form[field]}
-        onChange={e => updateForm(field, e.target.value)} className="form-input" />
+        onChange={e => updateForm(field, e.target.value)}
+        className="form-input" />
     </div>
   );
 
@@ -517,8 +462,8 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
       <div className="text-center order-success max-w-md">
         <div className="text-8xl mb-6">🎉</div>
         <h1 className="text-4xl font-black text-white mb-3">Ordine confermato!</h1>
-        <p className="text-gray-400 mb-2">Grazie, <span className="text-white font-semibold">{form.firstName}</span>!</p>
-        <p className="text-gray-500 text-sm mb-8">Conferma a <span className="text-purple-400">{form.email}</span></p>
+        <p className="text-gray-400 mb-2">Grazie per il tuo acquisto, <span className="text-white font-semibold">{form.firstName}</span>!</p>
+        <p className="text-gray-500 text-sm mb-8">Riceverai una conferma a <span className="text-purple-400">{form.email}</span></p>
         <div className="glass rounded-2xl p-6 mb-8 text-left">
           <h3 className="font-bold text-white mb-4">Riepilogo ordine</h3>
           {cart.map((p,i) => (
@@ -533,8 +478,12 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
           </div>
         </div>
         <div className="flex gap-3">
-          <button onClick={() => onOrderComplete()} className="btn-primary flex-1 py-3 rounded-xl font-semibold text-white">Continua shopping</button>
-          <button onClick={() => onOrderComplete('account')} className="glass flex-1 py-3 rounded-xl font-semibold text-white hover:bg-white/10 transition">I miei ordini</button>
+          <button onClick={() => onOrderComplete()} className="btn-primary flex-1 py-3 rounded-xl font-semibold text-white">
+            Continua lo shopping
+          </button>
+          <button onClick={() => onOrderComplete('account')} className="glass flex-1 py-3 rounded-xl font-semibold text-white hover:bg-white/10 transition">
+            I miei ordini
+          </button>
         </div>
       </div>
     </div>
@@ -544,19 +493,27 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
     <div className="max-w-6xl mx-auto px-6 pt-28 pb-20 fade-in">
       <button onClick={onBack} className="text-gray-400 hover:text-white transition flex items-center gap-2 mb-8">← Torna al carrello</button>
       <h1 className="text-4xl font-black text-white mb-10">Checkout</h1>
+
+      {/* Steps indicator */}
       <div className="flex items-center gap-4 mb-10">
         {[['1','Informazioni'],['2','Spedizione'],['3','Pagamento']].map(([n,label],i) => (
           <React.Fragment key={n}>
             <div className={`flex items-center gap-3 ${step===i+1?'opacity-100':step>i+1?'opacity-70':'opacity-40'}`}>
-              <div className={`step-number ${step===i+1?'active':step>i+1?'done':'pending'}`}>{step>i+1 ? '✓' : n}</div>
+              <div className={`step-number ${step===i+1?'active':step>i+1?'done':'pending'}`}>
+                {step>i+1 ? '✓' : n}
+              </div>
               <span className={`font-semibold text-sm ${step===i+1?'text-white':'text-gray-500'}`}>{label}</span>
             </div>
             {i < 2 && <div className="flex-1 h-px" style={{background:'rgba(255,255,255,0.1)'}}></div>}
           </React.Fragment>
         ))}
       </div>
+
       <div className="grid grid-cols-3 gap-8">
+        {/* Left - Form */}
         <div className="col-span-2">
+
+          {/* Step 1 - Info */}
           {step === 1 && (
             <div className="fade-in">
               <div className="glass rounded-2xl p-6 mb-6">
@@ -568,9 +525,10 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
                   <InputField label="Telefono" field="phone" placeholder="+39 333 123 4567" />
                 </div>
               </div>
+
               <div className="glass rounded-2xl p-6 mb-6">
                 <h2 className="text-xl font-bold text-white mb-6">Indirizzo di spedizione</h2>
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   <InputField label="Indirizzo" field="address" placeholder="Via Roma 1" />
                   <div className="grid grid-cols-3 gap-4">
                     <InputField label="Città" field="city" placeholder="Milano" />
@@ -584,109 +542,176 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
                   </div>
                 </div>
               </div>
-              <button onClick={() => {if(!form.firstName||!form.email||!form.address)return alert('Compila tutti i campi!'); setStep(2);}}
-                className="btn-primary w-full py-4 rounded-xl font-semibold text-white text-lg">Continua alla spedizione →</button>
+
+              <div className="glass rounded-2xl p-6 mb-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-white">Indirizzo di fatturazione</h2>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" checked={form.sameAsBilling} onChange={e => updateForm('sameAsBilling', e.target.checked)} className="w-4 h-4 accent-purple-600" />
+                    <span className="text-gray-400 text-sm">Stesso della spedizione</span>
+                  </label>
+                </div>
+                {!form.sameAsBilling && (
+                  <div className="grid grid-cols-1 gap-4">
+                    <InputField label="Indirizzo fatturazione" field="billingAddress" placeholder="Via Roma 1" />
+                    <div className="grid grid-cols-2 gap-4">
+                      <InputField label="Città" field="billingCity" placeholder="Milano" />
+                      <InputField label="CAP" field="billingZip" placeholder="20100" />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button onClick={() => {
+                if (!form.firstName || !form.email || !form.address) return alert('Compila tutti i campi obbligatori!');
+                setStep(2);
+              }} className="btn-primary w-full py-4 rounded-xl font-bold text-white text-lg">
+                Continua alla spedizione →
+              </button>
             </div>
           )}
+
+          {/* Step 2 - Shipping */}
           {step === 2 && (
             <div className="fade-in">
               <div className="glass rounded-2xl p-6 mb-6">
                 <h2 className="text-xl font-bold text-white mb-6">Metodo di spedizione</h2>
                 <div className="space-y-3">
-                  {SHIPPING_METHODS.map(m => (
-                    <div key={m.id} onClick={() => setShippingMethod(m.id)}
-                      className={`shipping-option ${shippingMethod===m.id?'selected':''}`}>
+                  {SHIPPING_METHODS.map(method => (
+                    <div key={method.id} onClick={() => setShippingMethod(method.id)}
+                      className={`shipping-option ${shippingMethod===method.id?'selected':''}`}>
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl">{m.icon}</span>
+                          <span className="text-2xl">{method.icon}</span>
                           <div>
-                            <p className="font-semibold text-white">{m.name}</p>
-                            <p className="text-gray-400 text-sm">{m.desc}</p>
+                            <p className="font-semibold text-white">{method.name}</p>
+                            <p className="text-gray-400 text-sm">{method.desc}</p>
                           </div>
                         </div>
-                        <span className="font-bold text-white">{m.price === 0 ? 'Gratis' : `€${m.price}`}</span>
+                        <div className="text-right">
+                          <p className="font-bold text-white">{method.price === 0 ? 'Gratis' : `€${method.price.toFixed(2)}`}</p>
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
+
+              {/* Coupon */}
+              <div className="glass rounded-2xl p-6 mb-6">
+                <h2 className="text-xl font-bold text-white mb-4">Codice sconto</h2>
+                <div className="flex gap-3">
+                  <input placeholder="Inserisci coupon (prova NEXUS10)" value={coupon}
+                    onChange={e => setCoupon(e.target.value)}
+                    className="form-input flex-1" />
+                  <button onClick={applyCoupon} className={`px-6 py-3 rounded-xl font-semibold text-white transition ${couponApplied?'bg-green-600':'btn-primary'}`}>
+                    {couponApplied ? '✓ Applicato!' : 'Applica'}
+                  </button>
+                </div>
+                {couponApplied && <p className="text-green-400 text-sm mt-2">✓ Sconto del 10% applicato!</p>}
+              </div>
+
               <div className="flex gap-3">
-                <button onClick={() => setStep(1)} className="glass flex-1 py-4 rounded-xl font-semibold text-white hover:bg-white/10 transition">← Indietro</button>
-                <button onClick={() => setStep(3)} className="btn-primary flex-1 py-4 rounded-xl font-semibold text-white">Continua al pagamento →</button>
+                <button onClick={() => setStep(1)} className="glass px-8 py-4 rounded-xl font-bold text-white hover:bg-white/10 transition">← Indietro</button>
+                <button onClick={() => setStep(3)} className="btn-primary flex-1 py-4 rounded-xl font-bold text-white text-lg">Continua al pagamento →</button>
               </div>
             </div>
           )}
+
+          {/* Step 3 - Payment */}
           {step === 3 && (
             <div className="fade-in">
               <div className="glass rounded-2xl p-6 mb-6">
-                <h2 className="text-xl font-bold text-white mb-6">Pagamento</h2>
-                <InputField label="Nome sulla carta" field="cardName" placeholder="Mario Rossi" />
-                <div className="mt-4">
-                  <label className="form-label">Numero carta</label>
-                  <input placeholder="1234 5678 9012 3456" value={form.cardNumber}
-                    onChange={e => updateForm('cardNumber', e.target.value.replace(/\D/g,'').replace(/(\d{4})/g,'$1 ').trim().slice(0,19))}
-                    className="form-input" />
-                </div>
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  <div>
-                    <label className="form-label">Scadenza</label>
-                    <input placeholder="MM/AA" value={form.cardExpiry}
-                      onChange={e => updateForm('cardExpiry', e.target.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1/$2').slice(0,5))}
-                      className="form-input" />
+                <h2 className="text-xl font-bold text-white mb-2">Pagamento</h2>
+                <p className="text-gray-500 text-sm mb-6">I tuoi dati di pagamento sono protetti con crittografia SSL.</p>
+                <div className="rounded-xl p-4 mb-6" style={{background:'rgba(139,92,246,0.08)',border:'1px solid rgba(139,92,246,0.2)'}}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-purple-400">🔒</span>
+                    <span className="text-purple-300 text-sm font-semibold">Pagamento sicuro simulato</span>
                   </div>
+                  <p className="text-gray-500 text-xs">Questa è una demo. Nessun addebito reale verrà effettuato. Integrazione Stripe disponibile nella versione produzione.</p>
+                </div>
+                <div className="grid grid-cols-1 gap-4">
+                  <InputField label="Nome sulla carta" field="cardName" placeholder="Mario Rossi" />
                   <div>
-                    <label className="form-label">CVV</label>
-                    <input placeholder="123" value={form.cardCvv} type="password"
-                      onChange={e => updateForm('cardCvv', e.target.value.slice(0,4))}
-                      className="form-input" />
+                    <label className="form-label">Numero carta</label>
+                    <input placeholder="1234 5678 9012 3456" value={form.cardNumber}
+                      onChange={e => updateForm('cardNumber', e.target.value.replace(/\D/g,'').replace(/(\d{4})/g,'$1 ').trim().slice(0,19))}
+                      className="form-input" maxLength="19" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="form-label">Scadenza</label>
+                      <input placeholder="MM/AA" value={form.cardExpiry}
+                        onChange={e => updateForm('cardExpiry', e.target.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1/$2').slice(0,5))}
+                        className="form-input" maxLength="5" />
+                    </div>
+                    <div>
+                      <label className="form-label">CVV</label>
+                      <input placeholder="123" value={form.cardCvv} type="password"
+                        onChange={e => updateForm('cardCvv', e.target.value.slice(0,4))}
+                        className="form-input" maxLength="4" />
+                    </div>
                   </div>
                 </div>
-                <div className="flex gap-3 mt-4 flex-wrap">
+                {/* Payment methods icons */}
+                <div className="flex gap-2 mt-4">
                   {['💳 Visa','💳 Mastercard','💳 Amex','🍎 Apple Pay','🔵 PayPal'].map(m => (
-                    <span key={m} className="glass text-gray-400 text-xs px-3 py-1.5 rounded-lg">{m}</span>
+                    <span key={m} className="glass text-xs px-2 py-1 rounded-lg text-gray-400">{m}</span>
                   ))}
                 </div>
               </div>
+
               <div className="flex gap-3">
-                <button onClick={() => setStep(2)} className="glass flex-1 py-4 rounded-xl font-semibold text-white hover:bg-white/10 transition">← Indietro</button>
-                <button onClick={() => {if(!form.cardName||!form.cardNumber)return alert('Inserisci i dati della carta!'); placeOrder();}}
-                  className="btn-primary flex-1 py-4 rounded-xl font-semibold text-white text-lg">Conferma ordine ✓</button>
+                <button onClick={() => setStep(2)} className="glass px-8 py-4 rounded-xl font-bold text-white hover:bg-white/10 transition">← Indietro</button>
+                <button onClick={() => {
+                  if (!form.cardName || !form.cardNumber) return alert('Inserisci i dati della carta!');
+                  placeOrder();
+                }} className="btn-primary flex-1 py-4 rounded-xl font-bold text-white text-lg">
+                  🔒 Conferma ordine — €{total.toFixed(2)}
+                </button>
               </div>
             </div>
           )}
         </div>
-        {/* Order summary */}
+
+        {/* Right - Order Summary */}
         <div>
           <div className="glass rounded-2xl p-6 sticky top-28">
-            <h3 className="font-bold text-white mb-4">Riepilogo ({cart.length})</h3>
-            <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
+            <h2 className="text-lg font-bold text-white mb-4">Riepilogo ordine</h2>
+            <div className="space-y-3 mb-4">
               {cart.map((p,i) => (
                 <div key={i} className="flex gap-3 items-center">
                   {p.image && <img src={p.image} alt={p.name} className="w-12 h-12 rounded-lg object-cover flex-shrink-0" />}
                   <div className="flex-1 min-w-0">
-                    <p className="text-white text-sm font-medium truncate">{p.name}</p>
-                    <p className="text-purple-400 text-sm font-bold">€{p.price}</p>
+                    <p className="text-white text-sm font-semibold truncate">{p.name}</p>
+                    <p className="text-gray-500 text-xs">{p.category}</p>
                   </div>
+                  <span className="text-white font-semibold text-sm">€{p.price}</span>
                 </div>
               ))}
             </div>
-            <div className="border-t border-white/10 pt-4 space-y-2 text-sm">
-              <div className="flex justify-between text-gray-400"><span>Subtotale</span><span>€{subtotal.toFixed(2)}</span></div>
-              {couponApplied && <div className="flex justify-between text-green-400"><span>Sconto 10%</span><span>-€{discount.toFixed(2)}</span></div>}
-              <div className="flex justify-between text-gray-400"><span>Spedizione</span><span>{shipping === 0 ? 'Gratis' : `€${shipping}`}</span></div>
-            </div>
-            <div className="flex justify-between font-bold text-lg mt-3 pt-3 border-t border-white/10">
-              <span className="text-white">Totale</span>
-              <span className="text-purple-400">€{total.toFixed(2)}</span>
-            </div>
-            {!couponApplied && (
-              <div className="mt-4 flex gap-2">
-                <input placeholder="Coupon (NEXUS10)" value={coupon} onChange={e => setCoupon(e.target.value)}
-                  className="flex-1 px-3 py-2 rounded-xl text-sm outline-none"
-                  style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)'}} />
-                <button onClick={applyCoupon} className="glass px-3 py-2 rounded-xl text-sm hover:bg-white/10 transition text-white">Applica</button>
+            <div className="border-t border-white/10 pt-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Subtotale</span>
+                <span className="text-white">€{subtotal.toFixed(2)}</span>
               </div>
-            )}
+              {couponApplied && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-green-400">Sconto (10%)</span>
+                  <span className="text-green-400">-€{discount.toFixed(2)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Spedizione</span>
+                <span className="text-white">{shipping === 0 ? 'Gratis' : `€${shipping.toFixed(2)}`}</span>
+              </div>
+              <div className="flex justify-between font-bold text-lg border-t border-white/10 pt-2 mt-2">
+                <span className="text-white">Totale</span>
+                <span className="text-purple-400">€{total.toFixed(2)}</span>
+              </div>
+              <p className="text-gray-600 text-xs text-right">IVA inclusa</p>
+            </div>
           </div>
         </div>
       </div>
@@ -694,37 +719,42 @@ function CheckoutPage({ cart, onOrderComplete, onBack }) {
   );
 }
 
-/* ─── ADMIN ─── */
 function AdminPage({ onBack }) {
   const [authed, setAuthed] = useState(false);
-  const [pw, setPw] = useState('');
-  const [products, setProducts] = useState(getProducts());
+  const [password, setPassword] = useState('');
+  const [products, setProducts] = useState([]);
   const empty = { name:'', tagline:'', category:'Audio', price:0, originalPrice:0, rating:5, reviews:0, image:'', badge:'', specs:[], description:'' };
   const [form, setForm] = useState(empty);
   const [editId, setEditId] = useState(null);
   const [specInput, setSpecInput] = useState({ label:'', value:'' });
 
+  useEffect(() => { if (authed) setProducts(getProducts()); }, [authed]);
+
   if (!authed) return (
     <div className="min-h-screen flex items-center justify-center" style={{background:'#0a0a0f'}}>
-      <div className="glass rounded-2xl p-10 w-full max-w-sm text-center">
-        <div className="text-4xl mb-4">🔒</div>
-        <h2 className="text-2xl font-bold text-white mb-6">Admin Access</h2>
-        <input type="password" placeholder="Password" value={pw} onChange={e => setPw(e.target.value)}
-          onKeyDown={e => e.key==='Enter'&&(pw===ADMIN_PASSWORD?setAuthed(true):alert('Password errata'))}
-          className="w-full px-4 py-3 rounded-xl outline-none mb-4"
+      <div className="aurora-bg"><div className="aurora3"></div></div>
+      <div className="glass rounded-3xl p-10 w-96 relative z-10">
+        <div className="text-center mb-8">
+          <div className="w-14 h-14 rounded-2xl btn-primary flex items-center justify-center text-2xl font-bold text-white mx-auto mb-4">N</div>
+          <h2 className="text-white text-3xl font-bold">Admin</h2>
+          <p className="text-gray-400 mt-2">Pannello di controllo</p>
+        </div>
+        <input type="password" placeholder="Password" value={password}
+          onChange={e => setPassword(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && password === ADMIN_PASSWORD && setAuthed(true)}
+          className="w-full px-4 py-3 rounded-xl mb-4 outline-none"
           style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)'}} />
-        <button onClick={() => pw===ADMIN_PASSWORD?setAuthed(true):alert('Password errata')}
-          className="btn-primary w-full py-3 rounded-xl font-semibold text-white">Accedi</button>
+        <button onClick={() => password === ADMIN_PASSWORD ? setAuthed(true) : alert('Password errata!')}
+          className="btn-primary w-full text-white py-3 rounded-xl font-semibold">Accedi</button>
       </div>
     </div>
   );
 
   const handleSubmit = () => {
-    if (!form.name) return alert('Inserisci il nome del prodotto');
-    if (editId) { updateProduct({...form, id:editId}); setEditId(null); }
-    else { addProduct({...form, id: Date.now().toString()}); }
-    setForm(empty);
-    setProducts(getProducts());
+    if (!form.name || !form.price) return alert('Nome e prezzo obbligatori!');
+    if (editId) updateProduct({ ...form, id: editId });
+    else addProduct({ ...form, id: crypto.randomUUID() });
+    setProducts(getProducts()); setForm(empty); setEditId(null);
   };
 
   return (
@@ -809,7 +839,6 @@ function AdminPage({ onBack }) {
   );
 }
 
-/* ─── PRODUCTS PAGE ─── */
 function ProductsPage({ onAddToCart, onProductClick }) {
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState('All');
@@ -818,7 +847,7 @@ function ProductsPage({ onAddToCart, onProductClick }) {
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [selectedBadges, setSelectedBadges] = useState([]);
   const [minRating, setMinRating] = useState(0);
-  const [viewMode, setViewMode] = useState('grid');
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const [filtersOpen, setFiltersOpen] = useState(true);
 
   useEffect(() => { setProducts(getProducts()); }, []);
@@ -826,8 +855,14 @@ function ProductsPage({ onAddToCart, onProductClick }) {
   const allBadges = ['New', 'Featured', 'Hot', 'Limited'];
   const categories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
   const maxPrice = products.length > 0 ? Math.ceil(Math.max(...products.map(p => p.price)) / 100) * 100 : 5000;
+
   const toggleBadge = (b) => setSelectedBadges(prev => prev.includes(b) ? prev.filter(x => x !== b) : [...prev, b]);
-  const resetFilters = () => { setCategory('All'); setSearch(''); setSort('default'); setPriceRange([0, maxPrice]); setSelectedBadges([]); setMinRating(0); };
+
+  const resetFilters = () => {
+    setCategory('All'); setSearch(''); setSort('default');
+    setPriceRange([0, maxPrice]); setSelectedBadges([]); setMinRating(0);
+  };
+
   const hasActiveFilters = category !== 'All' || search || sort !== 'default' || priceRange[0] > 0 || priceRange[1] < maxPrice || selectedBadges.length > 0 || minRating > 0;
 
   let filtered = [...products];
@@ -839,6 +874,7 @@ function ProductsPage({ onAddToCart, onProductClick }) {
   if (sort === 'price-asc') filtered = [...filtered].sort((a,b) => a.price - b.price);
   if (sort === 'price-desc') filtered = [...filtered].sort((a,b) => b.price - a.price);
   if (sort === 'rating') filtered = [...filtered].sort((a,b) => b.rating - a.rating);
+  if (sort === 'reviews') filtered = [...filtered].sort((a,b) => b.reviews - a.reviews);
   if (sort === 'name') filtered = [...filtered].sort((a,b) => a.name.localeCompare(b.name));
 
   if (products.length === 0) return (
@@ -855,110 +891,174 @@ function ProductsPage({ onAddToCart, onProductClick }) {
       <h2 className="text-5xl font-bold text-white mb-2">Negozio</h2>
       <p className="text-gray-400 mb-8">Tecnologia premium per il prossimo decennio.</p>
 
+      {/* Search + Sort + View toggle */}
       <div className="flex gap-3 mb-6">
         <div className="flex-1 relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">🔍</span>
           <input placeholder="Cerca prodotti, categorie, specifiche..." value={search} onChange={e => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-3 rounded-xl outline-none"
             style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)'}} />
+          {search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white text-lg">×</button>}
         </div>
         <select value={sort} onChange={e => setSort(e.target.value)}
-          className="px-4 py-3 rounded-xl outline-none text-sm"
+          className="px-4 py-3 rounded-xl outline-none"
           style={{background:'rgba(15,15,25,0.95)',border:'1px solid rgba(255,255,255,0.1)'}}>
-          <option value="default">Ordina per</option>
-          <option value="price-asc">Prezzo ↑</option>
-          <option value="price-desc">Prezzo ↓</option>
-          <option value="rating">Rating</option>
-          <option value="name">Nome A-Z</option>
+          <option value="default">Rilevanza</option>
+          <option value="price-asc">Prezzo: basso → alto</option>
+          <option value="price-desc">Prezzo: alto → basso</option>
+          <option value="rating">Valutazione</option>
+          <option value="reviews">Più recensiti</option>
+          <option value="name">Nome A→Z</option>
         </select>
-        <div className="flex glass rounded-xl overflow-hidden">
-          <button onClick={() => setViewMode('grid')} className={`px-4 py-3 transition ${viewMode==='grid'?'bg-white/10 text-white':'text-gray-500 hover:text-white'}`}>⊞</button>
-          <button onClick={() => setViewMode('list')} className={`px-4 py-3 transition ${viewMode==='list'?'bg-white/10 text-white':'text-gray-500 hover:text-white'}`}>☰</button>
+        {/* View mode toggle */}
+        <div className="glass rounded-xl flex overflow-hidden">
+          <button onClick={() => setViewMode('grid')} className="px-4 py-3 transition" style={{color: viewMode==='grid'?'white':'rgba(255,255,255,0.3)', background: viewMode==='grid'?'rgba(124,58,237,0.3)':'transparent'}}>
+            ⊞
+          </button>
+          <button onClick={() => setViewMode('list')} className="px-4 py-3 transition" style={{color: viewMode==='list'?'white':'rgba(255,255,255,0.3)', background: viewMode==='list'?'rgba(124,58,237,0.3)':'transparent'}}>
+            ☰
+          </button>
         </div>
-        <button onClick={() => setFiltersOpen(!filtersOpen)}
-          className={`glass px-4 py-3 rounded-xl text-sm transition ${filtersOpen?'text-white bg-white/10':'text-gray-400 hover:text-white'}`}>
-          ⚙ Filtri {hasActiveFilters && <span className="ml-1 btn-primary text-xs px-1.5 py-0.5 rounded-full text-white">!</span>}
+        {/* Filters toggle */}
+        <button onClick={() => setFiltersOpen(!filtersOpen)} className={`px-5 py-3 rounded-xl font-medium text-sm transition flex items-center gap-2 ${filtersOpen ? 'btn-primary text-white' : 'glass text-gray-400 hover:text-white'}`}>
+          ⚙ Filtri {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-pink-400 inline-block"></span>}
         </button>
       </div>
 
       <div className="flex gap-8">
+        {/* Sidebar Filtri */}
         {filtersOpen && (
-          <div className="w-56 flex-shrink-0">
+          <div className="w-64 flex-shrink-0 fade-in">
             <div className="glass rounded-2xl p-5 sticky top-28">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold text-white">Filtri</h3>
-                {hasActiveFilters && <button onClick={resetFilters} className="text-purple-400 text-xs hover:text-purple-300 transition">Reset</button>}
+              <div className="flex justify-between items-center mb-5">
+                <h3 className="font-bold text-white">Filtri</h3>
+                {hasActiveFilters && (
+                  <button onClick={resetFilters} className="text-xs text-purple-400 hover:text-purple-300 transition">Reset tutto</button>
+                )}
               </div>
-              <div className="mb-5">
+
+              {/* Categoria */}
+              <div className="mb-6">
                 <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Categoria</p>
                 <div className="space-y-1">
                   {categories.map(c => (
                     <button key={c} onClick={() => setCategory(c)}
-                      className="w-full text-left px-3 py-2 rounded-lg text-sm transition flex items-center justify-between"
+                      className="w-full text-left px-3 py-2 rounded-lg text-sm transition flex justify-between items-center"
                       style={{background: category===c ? 'rgba(124,58,237,0.2)' : 'transparent', color: category===c ? 'white' : 'rgba(156,163,175,1)'}}>
-                      {c}{category===c && <span className="text-purple-400">✓</span>}
+                      <span>{c}</span>
+                      {category===c && <span className="text-purple-400">✓</span>}
                     </button>
                   ))}
                 </div>
               </div>
-              <div className="mb-5">
-                <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Prezzo max: €{priceRange[1]}</p>
-                <input type="range" min={0} max={maxPrice} value={priceRange[1]} onChange={e => setPriceRange([priceRange[0], +e.target.value])}
+
+              {/* Prezzo */}
+              <div className="mb-6">
+                <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Prezzo</p>
+                <div className="flex justify-between text-sm text-gray-300 mb-2">
+                  <span>€{priceRange[0]}</span>
+                  <span>€{priceRange[1]}</span>
+                </div>
+                <input type="range" min={0} max={maxPrice} step={50}
+                  value={priceRange[1]}
+                  onChange={e => setPriceRange([priceRange[0], +e.target.value])}
+                  className="w-full accent-purple-500 mb-2" />
+                <input type="range" min={0} max={maxPrice} step={50}
+                  value={priceRange[0]}
+                  onChange={e => setPriceRange([Math.min(+e.target.value, priceRange[1]-50), priceRange[1]])}
                   className="w-full accent-purple-500" />
               </div>
-              <div className="mb-5">
+
+              {/* Rating minimo */}
+              <div className="mb-6">
+                <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Rating minimo</p>
+                <div className="flex gap-1">
+                  {[0,1,2,3,4,5].map(r => (
+                    <button key={r} onClick={() => setMinRating(r===minRating ? 0 : r)}
+                      className="flex-1 py-1.5 rounded-lg text-xs font-bold transition"
+                      style={{background: minRating===r && r>0 ? 'rgba(124,58,237,0.4)' : 'rgba(255,255,255,0.04)', border: `1px solid ${minRating===r && r>0 ? 'rgba(139,92,246,0.6)' : 'rgba(255,255,255,0.06)'}`, color: r===0 ? 'rgba(156,163,175,1)' : '#facc15'}}>
+                      {r===0 ? 'Tutti' : `${r}★`}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Badge */}
+              <div className="mb-2">
                 <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Badge</p>
                 <div className="flex flex-wrap gap-2">
                   {allBadges.map(b => (
                     <button key={b} onClick={() => toggleBadge(b)}
-                      className={`text-xs px-3 py-1 rounded-full transition ${selectedBadges.includes(b) ? 'btn-primary text-white' : 'glass text-gray-400 hover:text-white'}`}>{b}</button>
+                      className={`px-3 py-1 rounded-full text-xs font-bold transition ${getBadgeClass(b)} ${selectedBadges.includes(b) ? 'opacity-100 ring-2 ring-white/30' : 'opacity-50 hover:opacity-80'}`}
+                      style={{color:'white'}}>
+                      {b}
+                    </button>
                   ))}
                 </div>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase tracking-widest mb-3">Rating min: {minRating > 0 ? `★ ${minRating}` : 'Tutti'}</p>
-                <input type="range" min={0} max={5} step={0.5} value={minRating} onChange={e => setMinRating(+e.target.value)}
-                  className="w-full accent-purple-500" />
               </div>
             </div>
           </div>
         )}
 
-        <div className="flex-1">
-          <div className="flex gap-2 mb-4 flex-wrap">
-            {categories.slice(0,4).map(c => (
-              <button key={c} onClick={() => setCategory(c)}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition ${category===c?'btn-primary text-white':'glass text-gray-400 hover:text-white'}`}>
-                {c}
-              </button>
-            ))}
+        {/* Prodotti */}
+        <div className="flex-1 min-w-0">
+          {/* Risultati header */}
+          <div className="flex justify-between items-center mb-5">
+            <p className="text-gray-400 text-sm">
+              <span className="text-white font-semibold">{filtered.length}</span> prodotti trovati
+              {hasActiveFilters && <button onClick={resetFilters} className="ml-3 text-purple-400 hover:text-purple-300 transition text-xs">× Rimuovi filtri</button>}
+            </p>
+            {/* Category pills (quick access) */}
+            <div className="flex gap-2">
+              {categories.slice(0,4).map(c => (
+                <button key={c} onClick={() => setCategory(c)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition ${category===c?'btn-primary text-white':'glass text-gray-400 hover:text-white'}`}>
+                  {c}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <p className="text-gray-500 text-sm mb-4">{filtered.length} prodotti trovati</p>
-
-          {viewMode === 'grid' ? (
-            <div className="grid grid-cols-3 gap-5">
+          {filtered.length === 0 ? (
+            <div className="text-center py-20 fade-in">
+              <div className="text-5xl mb-4">🔍</div>
+              <h3 className="text-xl font-bold text-white mb-2">Nessun risultato</h3>
+              <p className="text-gray-400 mb-4">Prova a modificare i filtri</p>
+              <button onClick={resetFilters} className="btn-primary px-6 py-2 rounded-xl text-white font-semibold">Reset filtri</button>
+            </div>
+          ) : viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filtered.map(p => (
-                <div key={p.id} className="product-card" onClick={() => onProductClick(p)}>
-                  <div className="product-card-img" style={{height:'220px'}}>
-                    {p.image ? <img src={p.image} alt={p.name} /> : <div className="text-6xl">📦</div>}
-                    <div style={{position:'absolute',top:'12px',left:'12px',right:'12px',display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-                      {p.badge ? <span className={`${getBadgeClass(p.badge)} text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}>{p.badge}</span> : <span></span>}
-                      <span className="cat-pill">{p.category}</span>
+                <div key={p.id} className="glass-card rounded-2xl overflow-hidden cursor-pointer fade-in" onClick={() => onProductClick(p)}>
+                  <div className="relative">
+                    {p.image
+                      ? <img src={p.image} alt={p.name} className="w-full h-56 object-cover" />
+                : <div className="w-full h-56 flex items-center justify-center text-5xl" style={{background:'rgba(255,255,255,0.02)'}}>📦</div>}
+                    <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
+                      {p.badge && <span className={`${getBadgeClass(p.badge)} text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide`}>{p.badge}</span>}
+                      <span className="glass text-gray-300 text-xs px-3 py-1 rounded-full ml-auto">{p.category}</span>
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-bold text-white text-base mb-1">{p.name}</h3>
-                    <p className="text-gray-500 text-sm mb-3">{p.tagline}</p>
-                    <div className="flex justify-between items-center">
-                      <p className="text-white font-black text-xl">€{p.price}</p>
+                    <h3 className="text-white font-bold text-lg mb-1">{p.name}</h3>
+                    <p className="text-gray-400 text-sm mb-4">{p.tagline}</p>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-white font-bold text-2xl">€{p.price}</span>
                       <div className="flex items-center gap-1">
                         <span className="text-yellow-400 text-sm">★</span>
-                        <span className="text-gray-400 text-sm">{p.rating}</span>
+                        <span className="text-gray-300 text-sm">{p.rating}</span>
+                        {p.reviews > 0 && <span className="text-gray-500 text-xs">({p.reviews})</span>}
                       </div>
                     </div>
+                    {p.specs && p.specs.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {p.specs.slice(0,3).map((s,i) => (
+                          <span key={i} className="glass text-gray-300 text-xs px-2 py-1 rounded-lg">{s.label}: {s.value}</span>
+                        ))}
+                      </div>
+                    )}
                     <button onClick={e => {e.stopPropagation();onAddToCart(p);}}
-                      className="btn-primary w-full mt-3 py-2.5 rounded-xl text-white text-sm font-semibold">
+                      className="btn-primary w-full text-white py-2.5 rounded-xl font-semibold">
                       Aggiungi al carrello
                     </button>
                   </div>
@@ -966,29 +1066,44 @@ function ProductsPage({ onAddToCart, onProductClick }) {
               ))}
             </div>
           ) : (
-            <div className="space-y-3">
+            // Lista view
+            <div className="space-y-4">
               {filtered.map(p => (
-                <div key={p.id} className="product-card flex overflow-hidden" style={{height:'120px'}} onClick={() => onProductClick(p)}>
-                  <div className="w-32 flex-shrink-0" style={{background:'#0d0d14'}}>
-                    {p.image ? <img src={p.image} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-4xl">📦</div>}
+                <div key={p.id} className="glass-card rounded-2xl overflow-hidden cursor-pointer fade-in flex gap-0" onClick={() => onProductClick(p)}>
+                  <div className="relative flex-shrink-0 w-48">
+                    {p.image
+                      ? <img src={p.image} alt={p.name} className="w-48 h-40 object-cover" />
+                      : <div className="w-48 h-40 flex items-center justify-center text-4xl" style={{background:'rgba(255,255,255,0.02)'}}>📦</div>}
+                    {p.badge && (
+                      <span className={`absolute top-3 left-3 ${getBadgeClass(p.badge)} text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}>{p.badge}</span>
+                    )}
                   </div>
-                  <div className="flex-1 p-4 flex items-center justify-between">
+                  <div className="flex-1 p-5 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="cat-pill">{p.category}</span>
-                        {p.badge && <span className={`${getBadgeClass(p.badge)} text-white text-xs font-bold px-2 py-0.5 rounded-full uppercase`}>{p.badge}</span>}
+                        <span className="glass text-gray-400 text-xs px-2 py-0.5 rounded-full">{p.category}</span>
                       </div>
-                      <h3 className="font-bold text-white">{p.name}</h3>
-                      <p className="text-gray-500 text-sm">{p.tagline}</p>
+                      <h3 className="text-white font-bold text-xl mb-1">{p.name}</h3>
+                      <p className="text-gray-400 text-sm mb-3">{p.tagline}</p>
+                      {p.specs && p.specs.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {p.specs.slice(0,4).map((s,i) => (
+                            <span key={i} className="glass text-gray-300 text-xs px-2 py-1 rounded-lg">{s.label}: {s.value}</span>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                    <div className="text-right flex-shrink-0 ml-4">
-                      <p className="text-white font-black text-xl mb-1">€{p.price}</p>
-                      <div className="flex items-center gap-1 justify-end mb-2">
-                        <span className="text-yellow-400 text-sm">★</span>
-                        <span className="text-gray-400 text-sm">{p.rating}</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <span className="text-white font-black text-2xl">€{p.price}</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-yellow-400">★</span>
+                          <span className="text-gray-300 text-sm">{p.rating}</span>
+                          {p.reviews > 0 && <span className="text-gray-500 text-xs">({p.reviews.toLocaleString()} rec.)</span>}
+                        </div>
                       </div>
                       <button onClick={e => {e.stopPropagation();onAddToCart(p);}}
-                        className="btn-primary px-4 py-1.5 rounded-lg text-white text-sm font-semibold">
+                        className="btn-primary px-6 text-white py-2.5 rounded-xl font-semibold">
                         + Carrello
                       </button>
                     </div>
@@ -1003,7 +1118,312 @@ function ProductsPage({ onAddToCart, onProductClick }) {
   );
 }
 
-/* ─── CART DRAWER ─── */
+function App() {
+  const [page, setPage] = useState('home');
+  const [cart, setCart] = useState([]);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
+  const [aiQuery, setAiQuery] = useState('');
+
+  const addToCart = (p) => setCart(prev => [...prev, p]);
+  const removeFromCart = (i) => setCart(prev => prev.filter((_,j) => j !== i));
+  const updateQty = (i, delta) => setCart(prev => {
+    const next = [...prev];
+    const newQty = (next.filter((_,j) => j === i).length) + delta;
+    if (newQty <= 0) return next.filter((_,j) => j !== i);
+    return next;
+  });
+  const total = cart.reduce((sum,p) => sum + p.price, 0);
+
+  const tickerItems = ['TIME · Best Invention 2026','WIRED · 10/10','Fast Company · Most Innovative','Wallpaper* · Design of the Year','T3 · Gadget of the Year','Engadget · Editor\'s Choice'];
+  const stats = [{value:'2.4M+',label:'Utenti attivi'},{value:'84',label:'Paesi'},{value:'37',label:'Premi di design'},{value:'99.99%',label:'Uptime'}];
+
+  if (page === 'admin') return <AdminPage onBack={() => setPage('home')} />;
+
+  if (page === 'checkout') return (
+    <div className="min-h-screen text-white" style={{background:'#0a0a0f'}}>
+      <div className="aurora-bg"><div className="aurora3"></div></div>
+      <nav className="fixed top-0 w-full z-50 px-6 py-4">
+        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
+            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold text-white">N</div>
+            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <span>🔒</span><span>Checkout sicuro</span>
+          </div>
+        </div>
+      </nav>
+      <div className="relative z-10">
+        <CheckoutPage
+          cart={cart}
+          onOrderComplete={(dest) => { setCart([]); setPage(dest || 'home'); }}
+          onBack={() => setPage('cart')}
+        />
+      </div>
+    </div>
+  );
+
+  if (currentProduct) return (
+    <div className="min-h-screen text-white" style={{background:'#0a0a0f'}}>
+      <div className="aurora-bg"><div className="aurora3"></div></div>
+      <nav className="fixed top-0 w-full z-50 px-6 py-4">
+        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => {setCurrentProduct(null);setPage('home');}}>
+            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold text-white">N</div>
+            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
+          </div>
+          <div className="flex gap-6 text-sm">
+            <button onClick={() => {setCurrentProduct(null);setPage('home');}} className="text-gray-400 hover:text-white transition font-medium">Home</button>
+            <button onClick={() => {setCurrentProduct(null);setPage('products');}} className="text-gray-400 hover:text-white transition font-medium">Negozio</button>
+            <button onClick={() => {setCurrentProduct(null);setPage('admin');}} className="text-gray-400 hover:text-white transition font-medium">Admin</button>
+          </div>
+          <button onClick={() => setCartOpen(!cartOpen)} className="glass px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition">
+            🛒 {cart.length > 0 && <span className="btn-primary text-white text-xs px-2 py-0.5 rounded-full">{cart.length}</span>}
+          </button>
+        </div>
+      </nav>
+      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
+      <div className="relative z-10">
+        <ProductDetailPage
+          product={currentProduct}
+          onAddToCart={(p) => {addToCart(p);setCartOpen(true);}}
+          onBack={() => {setCurrentProduct(null);setPage('products');}}
+          allProducts={getProducts()}
+          setCurrentProduct={setCurrentProduct}
+        />
+        <Footer setPage={(p) => {setCurrentProduct(null);setPage(p);}} />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen text-white relative" style={{background:'#0a0a0f'}}>
+      <div className="aurora-bg"><div className="aurora3"></div></div>
+
+      <nav className="fixed top-0 w-full z-50 px-6 py-4">
+        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
+            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold text-white">N</div>
+            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
+          </div>
+          <div className="flex gap-6 text-sm">
+            {[['home','Home'],['products','Negozio'],['admin','Admin']].map(([p,label]) => (
+              <button key={p} onClick={() => setPage(p)}
+                className={`nav-link font-medium transition ${page===p?'active text-white':'text-gray-400 hover:text-white'}`}>
+                {label}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setCartOpen(!cartOpen)} className="glass px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition">
+            🛒 {cart.length > 0 && <span className="btn-primary text-white text-xs px-2 py-0.5 rounded-full">{cart.length}</span>}
+          </button>
+        </div>
+      </nav>
+
+      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
+
+      <main className="relative z-10">
+        {page === 'home' && (
+          <>
+            <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-10">
+              <div className="glass rounded-full px-5 py-2 text-sm text-purple-300 mb-8 inline-flex items-center gap-2">✦ Nuovo silicio Nexus N1 →</div>
+              <h1 className="text-7xl font-black mb-4 leading-tight max-w-4xl">
+                Il futuro,<br/><span className="gradient-text">consegnato oggi.</span>
+              </h1>
+              <p className="text-gray-400 text-xl mb-10 max-w-lg">Tecnologia premium ingegnerizzata per il prossimo decennio. Progettata a Zurigo, costruita per tutti.</p>
+              <div className="flex gap-4 mb-12">
+                <button onClick={() => setPage('products')} className="btn-primary px-8 py-4 rounded-2xl font-semibold text-white text-lg">Scopri la collezione →</button>
+                <button className="glass px-8 py-4 rounded-2xl font-semibold text-white text-lg hover:bg-white/10 transition">Guarda il keynote</button>
+              </div>
+              <div className="w-full max-w-xl">
+                <div className="glass rounded-2xl p-1 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl btn-primary flex items-center justify-center flex-shrink-0 ml-2"><span className="text-sm text-white">✦</span></div>
+                  <input placeholder="Chiedi a Nexus AI — prova 'migliori cuffie sotto €500'" value={aiQuery} onChange={e => setAiQuery(e.target.value)}
+                    className="flex-1 bg-transparent outline-none text-sm py-2" style={{color:'rgba(255,255,255,0.7)'}} />
+                  <button className="btn-primary px-4 py-2 rounded-xl text-white text-sm font-semibold mr-1" onClick={() => {if(aiQuery.trim())setPage('products');}}>Chiedi</button>
+                </div>
+                <div className="flex gap-2 mt-3 flex-wrap justify-center">
+                  {['Audio spaziale','Occhiali AR','Regalo sotto €300','9 giorni di batteria'].map(tag => (
+                    <button key={tag} onClick={() => setPage('products')} className="glass text-gray-400 text-xs px-3 py-1 rounded-full hover:text-white transition">{tag}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="ticker-wrap py-4" style={{borderTop:'1px solid rgba(255,255,255,0.05)',borderBottom:'1px solid rgba(255,255,255,0.05)',background:'rgba(255,255,255,0.02)'}}>
+              <div className="ticker">
+                {[...tickerItems,...tickerItems].map((item,i) => (
+                  <span key={i} className="text-gray-500 text-sm font-medium">★ {item}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="max-w-6xl mx-auto px-6 py-16">
+              <div className="grid grid-cols-4 gap-4">
+                {stats.map((s,i) => (
+                  <div key={i} className="stat-card rounded-2xl p-6 text-center">
+                    <div className="text-4xl font-black gradient-text-pink mb-2">{s.value}</div>
+                    <div className="text-gray-400 text-sm">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Categorie */}
+            <div className="max-w-6xl mx-auto px-6 pb-16">
+              <div className="text-center mb-10">
+                <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">ESPLORA</p>
+                <h2 className="text-4xl font-bold text-white">Scegli la tua categoria</h2>
+              </div>
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+                {[
+                  {icon:'🎧',name:'Audio',color:'rgba(139,92,246,0.15)',border:'rgba(139,92,246,0.3)'},
+                  {icon:'⌚',name:'Wearables',color:'rgba(236,72,153,0.15)',border:'rgba(236,72,153,0.3)'},
+                  {icon:'💻',name:'Computing',color:'rgba(59,130,246,0.15)',border:'rgba(59,130,246,0.3)'},
+                  {icon:'🥽',name:'Vision',color:'rgba(16,185,129,0.15)',border:'rgba(16,185,129,0.3)'},
+                  {icon:'🏠',name:'Home',color:'rgba(245,158,11,0.15)',border:'rgba(245,158,11,0.3)'},
+                  {icon:'🎮',name:'Gaming',color:'rgba(239,68,68,0.15)',border:'rgba(239,68,68,0.3)'},
+                ].map(cat => (
+                  <button key={cat.name} onClick={() => setPage('products')}
+                    className="flex flex-col items-center gap-3 p-5 rounded-2xl transition hover:scale-105"
+                    style={{background:cat.color, border:`1px solid ${cat.border}`}}>
+                    <span className="text-4xl">{cat.icon}</span>
+                    <span className="text-white font-semibold text-sm">{cat.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Prodotto in evidenza (hero) */}
+            {getProducts().length > 0 && (() => {
+              const featured = getProducts().find(p => p.badge && ['featured','in evidenza'].includes(p.badge.toLowerCase())) || getProducts()[0];
+              return (
+                <div className="max-w-6xl mx-auto px-6 pb-16">
+                  <div className="rounded-3xl overflow-hidden" style={{background:'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(236,72,153,0.1))',border:'1px solid rgba(139,92,246,0.25)'}}>
+                    <div className="grid grid-cols-2 gap-0">
+                      <div className="relative overflow-hidden" style={{minHeight:'400px'}}>
+                        {featured.image
+                          ? <img src={featured.image} alt={featured.name} className="w-full h-full object-cover" style={{minHeight:'400px'}} />
+                          : <div className="w-full h-full flex items-center justify-center text-9xl" style={{minHeight:'400px',background:'rgba(255,255,255,0.02)'}}>📦</div>
+                        }
+                        <div className="absolute inset-0" style={{background:'linear-gradient(to right,transparent 60%,rgba(10,10,15,0.8))'}}></div>
+                        {featured.badge && (
+                          <span className={`absolute top-6 left-6 ${getBadgeClass(featured.badge)} text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wide`}>{featured.badge}</span>
+                        )}
+                      </div>
+                      <div className="flex flex-col justify-center p-12">
+                        <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-3">{featured.category} · IN EVIDENZA</p>
+                        <h2 className="text-5xl font-black text-white mb-3 leading-tight">{featured.name}</h2>
+                        <p className="text-gray-300 text-lg mb-2">{featured.tagline}</p>
+                        {featured.description && <p className="text-gray-500 text-sm mb-6 leading-relaxed line-clamp-3">{featured.description}</p>}
+                        {featured.specs && featured.specs.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-8">
+                            {featured.specs.slice(0,4).map((s,i) => (
+                              <span key={i} className="glass text-gray-300 text-xs px-3 py-1.5 rounded-lg">{s.label}: {s.value}</span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-4 mb-8">
+                          <span className="text-5xl font-black text-white">€{featured.price}</span>
+                          <div className="flex flex-col">
+                            <div className="flex gap-0.5">{[1,2,3,4,5].map(i=><span key={i} className={i<=Math.round(featured.rating)?'text-yellow-400':'text-gray-700'}>★</span>)}</div>
+                            <span className="text-gray-500 text-xs">{featured.reviews?.toLocaleString()} recensioni</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <button onClick={() => setCurrentProduct(featured)} className="btn-primary px-8 py-3 rounded-xl font-bold text-white">Scopri di più →</button>
+                          <button onClick={() => {addToCart(featured);setCartOpen(true);}} className="glass px-6 py-3 rounded-xl font-semibold text-white hover:bg-white/10 transition">+ Carrello</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Prodotti in evidenza grid */}
+            {getProducts().length > 0 && (
+              <div className="max-w-6xl mx-auto px-6 pb-16">
+                <div className="flex justify-between items-end mb-8">
+                  <div>
+                    <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-1">COLLEZIONE 04</p>
+                    <h2 className="text-4xl font-bold text-white">Prodotti in evidenza</h2>
+                  </div>
+                  <button onClick={() => setPage('products')} className="text-gray-400 hover:text-white transition text-sm">Vedi tutti →</button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {getProducts().slice(0,3).map(p => (
+                    <div key={p.id} className="glass-card rounded-2xl overflow-hidden cursor-pointer" onClick={() => setCurrentProduct(p)}>
+                      <div className="relative">
+                        {p.image ? <img src={p.image} alt={p.name} className="w-full h-52 object-cover" /> : <div className="w-full h-52 flex items-center justify-center text-4xl" style={{background:'rgba(255,255,255,0.02)'}}>📦</div>}
+                        <div className="absolute top-3 left-3 right-3 flex justify-between">
+                          {p.badge && <span className={`${getBadgeClass(p.badge)} text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}>{p.badge}</span>}
+                          <span className="glass text-gray-300 text-xs px-3 py-1 rounded-full ml-auto">{p.category}</span>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-bold text-white text-lg">{p.name}</h3>
+                        <p className="text-gray-400 text-sm mb-2">{p.tagline}</p>
+                        <div className="flex justify-between items-center">
+                          <p className="text-white font-bold text-xl">€{p.price}</p>
+                          <div className="flex items-center gap-1"><span className="text-yellow-400 text-sm">★</span><span className="text-gray-300 text-sm">{p.rating}</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Perché Nexus */}
+            <div className="max-w-6xl mx-auto px-6 pb-16">
+              <div className="text-center mb-10">
+                <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">I NOSTRI VALORI</p>
+                <h2 className="text-4xl font-bold text-white">Perché scegliere Nexus</h2>
+              </div>
+              <div className="grid grid-cols-3 gap-6">
+                {[
+                  {icon:'🚀',title:'Spedizione Express',desc:'Consegna in 24h su tutta Europa. Ritiro gratuito in negozio disponibile.',color:'rgba(124,58,237,0.1)',border:'rgba(124,58,237,0.2)'},
+                  {icon:'🛡️',title:'Garanzia 3 anni',desc:'Ogni prodotto coperto da garanzia estesa. Assistenza dedicata 7/7.',color:'rgba(16,185,129,0.1)',border:'rgba(16,185,129,0.2)'},
+                  {icon:'↩️',title:'Resi gratuiti',desc:'30 giorni per restituire qualsiasi prodotto, senza domande.',color:'rgba(236,72,153,0.1)',border:'rgba(236,72,153,0.2)'},
+                ].map(f => (
+                  <div key={f.title} className="rounded-2xl p-8 text-center transition hover:scale-105" style={{background:f.color,border:`1px solid ${f.border}`}}>
+                    <div className="text-5xl mb-5">{f.icon}</div>
+                    <h3 className="text-white font-bold text-xl mb-3">{f.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Premi e riconoscimenti */}
+            <div className="max-w-6xl mx-auto px-6 pb-16">
+              <div className="glass rounded-3xl p-8">
+                <p className="text-center text-gray-500 text-xs uppercase tracking-widest mb-6">Riconosciuti dai migliori</p>
+                <div className="flex justify-center items-center gap-12 flex-wrap">
+                  {['TIME','WIRED','Fast Company','Wallpaper*','T3','Engadget'].map(brand => (
+                    <span key={brand} className="text-gray-600 font-black text-xl hover:text-gray-300 transition cursor-default tracking-tight">{brand}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <Footer setPage={setPage} />
+          </>
+        )}
+
+        {page === 'products' && (
+          <div className="max-w-6xl mx-auto px-6 pt-28">
+            <ProductsPage onAddToCart={(p) => {addToCart(p);setCartOpen(true);}} onProductClick={setCurrentProduct} />
+            <Footer setPage={setPage} />
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
 function CartDrawer({ cart, removeFromCart, total, onClose, onCheckout }) {
   return (
     <div className="fixed top-0 right-0 h-full w-96 z-50 glass-dark p-6 overflow-y-auto" style={{zIndex:100}}>
@@ -1018,7 +1438,7 @@ function CartDrawer({ cart, removeFromCart, total, onClose, onCheckout }) {
           <div className="space-y-4 mb-6">
             {cart.map((p,i) => (
               <div key={i} className="glass rounded-xl p-3 flex gap-3 items-center">
-                {p.image && <img src={p.image} alt={p.name} className="w-14 h-14 rounded-lg object-cover flex-shrink-0" />}
+                {p.image && <img src={p.image} alt={p.name} className="w-14 h-14 rounded-lg object-cover" />}
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm text-white truncate">{p.name}</p>
                   <p className="text-purple-400 font-bold">€{p.price}</p>
@@ -1041,443 +1461,6 @@ function CartDrawer({ cart, removeFromCart, total, onClose, onCheckout }) {
     </div>
   );
 }
-
-/* ─── MAIN APP ─── */
-function App() {
-  const [page, setPage] = useState('home');
-  const [cart, setCart] = useState([]);
-  const [cartOpen, setCartOpen] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState(null);
-  const [aiQuery, setAiQuery] = useState('');
-
-  const addToCart = (p) => setCart(prev => [...prev, p]);
-  const removeFromCart = (i) => setCart(prev => prev.filter((_,idx) => idx !== i));
-  const total = cart.reduce((s,p) => s + p.price, 0);
-
-  // If viewing a product detail
-  if (currentProduct) return (
-    <div className="min-h-screen text-white" style={{background:'#0a0a0f'}}>
-      <div className="aurora-bg"><div className="aurora3"></div></div>
-      <nav className="fixed top-0 w-full z-50 px-6 py-4">
-        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => {setCurrentProduct(null);setPage('home');}}>
-            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold text-white">N</div>
-            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
-          </div>
-          <div className="flex gap-6 text-sm">
-            {[['home','Home'],['products','Shop'],['admin','Admin']].map(([p,label]) => (
-              <button key={p} onClick={() => {setCurrentProduct(null);setPage(p);}}
-                className="nav-link font-medium transition text-gray-400 hover:text-white">{label}</button>
-            ))}
-          </div>
-          <button onClick={() => setCartOpen(!cartOpen)} className="glass px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 hover:bg-white/10 transition">
-            🛒 {cart.length > 0 && <span className="btn-primary text-white text-xs px-2 py-0.5 rounded-full">{cart.length}</span>}
-          </button>
-        </div>
-      </nav>
-      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
-      <div className="relative z-10">
-        <ProductDetailPage
-          product={currentProduct}
-          onAddToCart={(p) => { addToCart(p); setCartOpen(true); }}
-          onBack={() => setCurrentProduct(null)}
-          allProducts={getProducts()}
-          setCurrentProduct={setCurrentProduct}
-        />
-        <Footer setPage={(p) => {setCurrentProduct(null);setPage(p);}} />
-      </div>
-    </div>
-  );
-
-  if (page === 'admin') return (
-    <AdminPage onBack={() => setPage('home')} />
-  );
-
-  if (page === 'checkout') return (
-    <div className="min-h-screen text-white" style={{background:'#0a0a0f'}}>
-      <div className="aurora-bg"><div className="aurora3"></div></div>
-      <nav className="fixed top-0 w-full z-50 px-6 py-4">
-        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
-            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold text-white">N</div>
-            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
-          </div>
-          <span className="text-gray-400 text-sm">Checkout sicuro 🔒</span>
-        </div>
-      </nav>
-      <div className="relative z-10">
-        <CheckoutPage cart={cart} onOrderComplete={(dest) => { setCart([]); setPage(dest || 'home'); }} onBack={() => setPage('products')} />
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen text-white relative" style={{background:'#0a0a0f'}}>
-      <div className="aurora-bg"><div className="aurora3"></div></div>
-
-      {/* NAVBAR — Lovable style with Compare & Account */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-4">
-        <div className="max-w-6xl mx-auto glass rounded-2xl px-6 py-3 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
-            <div className="w-8 h-8 rounded-lg btn-primary flex items-center justify-center text-sm font-bold text-white">N</div>
-            <span className="font-bold text-lg">NEXUS<span className="gradient-text">TECH</span></span>
-          </div>
-          {/* Center nav pill — exactly like Lovable */}
-          <div className="glass rounded-full px-2 py-1.5 flex gap-1">
-            {[['home','Home'],['products','Shop'],['compare','Compare'],['account','Account'],['admin','Admin']].map(([p,label]) => (
-              <button key={p} onClick={() => setPage(p)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${page===p?'bg-white/15 text-white':'text-gray-400 hover:text-white'}`}>
-                {label}
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="glass w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition text-sm">🔍</button>
-            <button className="glass w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition text-sm">☀</button>
-            <button onClick={() => setCartOpen(!cartOpen)}
-              className="glass w-9 h-9 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition relative text-sm">
-              🛒
-              {cart.length > 0 && (
-                <span className="absolute -top-1 -right-1 btn-primary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold">{cart.length}</span>
-              )}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {cartOpen && <CartDrawer cart={cart} removeFromCart={removeFromCart} total={total} onClose={() => setCartOpen(false)} onCheckout={() => { setCartOpen(false); setPage("checkout"); }} />}
-
-      <main className="relative z-10">
-        {page === 'home' && (
-          <>
-            {/* ── HERO TEXT SECTION ── */}
-            <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-28 pb-10">
-              <div className="glass rounded-full px-5 py-2 text-sm text-purple-300 mb-8 inline-flex items-center gap-2">✦ Nuovo silicio Nexus N1 →</div>
-              <h1 className="text-7xl font-black mb-4 leading-tight max-w-4xl">
-                Il futuro,<br/><span className="gradient-text">consegnato oggi.</span>
-              </h1>
-              <p className="text-gray-400 text-xl mb-10 max-w-lg">Tecnologia premium ingegnerizzata per il prossimo decennio. Progettata a Zurigo, costruita per tutti.</p>
-              <div className="flex gap-4 mb-12">
-                <button onClick={() => setPage('products')} className="btn-primary px-8 py-4 rounded-2xl font-semibold text-white text-lg">Scopri la collezione →</button>
-                <button className="glass px-8 py-4 rounded-2xl font-semibold text-white text-lg hover:bg-white/10 transition">Guarda il keynote</button>
-              </div>
-              {/* AI search */}
-              <div className="w-full max-w-xl">
-                <div className="glass rounded-2xl p-1 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl btn-primary flex items-center justify-center flex-shrink-0 ml-2"><span className="text-sm text-white">✦</span></div>
-                  <input placeholder="Chiedi a Nexus AI — prova 'migliori cuffie sotto €500'" value={aiQuery} onChange={e => setAiQuery(e.target.value)}
-                    className="flex-1 bg-transparent outline-none text-sm py-2" style={{color:'rgba(255,255,255,0.7)'}} />
-                  <button className="btn-primary px-4 py-2 rounded-xl text-white text-sm font-semibold mr-1" onClick={() => {if(aiQuery.trim())setPage('products');}}>Chiedi</button>
-                </div>
-                <div className="flex gap-2 mt-3 flex-wrap justify-center">
-                  {['Audio spaziale','Occhiali AR','Regalo sotto €300','9 giorni di batteria'].map(tag => (
-                    <button key={tag} onClick={() => setPage('products')} className="glass text-gray-400 text-xs px-3 py-1 rounded-full hover:text-white transition">{tag}</button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* ── HERO DEVICE — Lovable style ── */}
-            <div className="max-w-5xl mx-auto px-6 pb-10">
-              <div className="hero-device-section">
-                {/* placeholder aurora bg, real image if available */}
-                {(() => {
-                  const prods = getProducts();
-                  const featured = prods.find(p => p.badge && ['featured','in evidenza'].includes(p.badge.toLowerCase())) || prods[0];
-                  return featured && featured.image ? (
-                    <img src={featured.image} alt={featured.name} className="hero-device-img" style={{minHeight:'480px'}} />
-                  ) : (
-                    <div style={{minHeight:'480px',display:'flex',alignItems:'center',justifyContent:'center'}}>
-                      <div style={{fontSize:'120px',opacity:0.3}}>📱</div>
-                    </div>
-                  );
-                })()}
-                {/* Gradient overlay */}
-                <div style={{position:'absolute',inset:0,background:'linear-gradient(to bottom, transparent 40%, rgba(10,10,15,0.5) 100%)'}}></div>
-
-                {/* Floating spec cards — exactly like Lovable */}
-                <div className="spec-card-float" style={{top:'48px',left:'48px'}}>
-                  <div className="spec-card-icon">⚙️</div>
-                  <div style={{fontSize:'11px',color:'rgba(255,255,255,0.5)',marginBottom:'2px'}}>N1 Silicon</div>
-                  <div style={{fontSize:'15px',fontWeight:'700',color:'white'}}>12-core · 3nm</div>
-                </div>
-
-                <div className="spec-card-float" style={{top:'48px',right:'48px'}}>
-                  <div className="spec-card-icon" style={{background:'rgba(236,72,153,0.3)'}}>⚡</div>
-                  <div style={{fontSize:'11px',color:'rgba(255,255,255,0.5)',marginBottom:'2px'}}>Battery</div>
-                  <div style={{fontSize:'15px',fontWeight:'700',color:'#a78bfa'}}>22h continuous</div>
-                </div>
-
-                <div className="spec-card-float" style={{bottom:'48px',left:'48px'}}>
-                  <div className="spec-card-icon" style={{background:'rgba(59,130,246,0.3)'}}>🔒</div>
-                  <div style={{fontSize:'11px',color:'rgba(255,255,255,0.5)',marginBottom:'2px'}}>Privacy</div>
-                  <div style={{fontSize:'15px',fontWeight:'700',color:'white'}}>On-device AI</div>
-                </div>
-              </div>
-            </div>
-
-            {/* ── TICKER ── */}
-            <div className="ticker-wrap py-4" style={{borderTop:'1px solid rgba(255,255,255,0.05)',borderBottom:'1px solid rgba(255,255,255,0.05)',background:'rgba(255,255,255,0.02)'}}>
-              <div className="ticker">
-                {[...tickerItems,...tickerItems].map((item,i) => (
-                  <span key={i} className="text-gray-500 text-sm font-medium">★ {item}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* ── STATS ── */}
-            <div className="max-w-6xl mx-auto px-6 py-16">
-              <div className="grid grid-cols-4 gap-4">
-                {stats.map((s,i) => (
-                  <div key={i} className="stat-card rounded-2xl p-6 text-center">
-                    <div className="text-4xl font-black gradient-text-pink mb-2">{s.value}</div>
-                    <div className="text-gray-400 text-sm">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ── CATEGORIE ── */}
-            <div className="max-w-6xl mx-auto px-6 pb-16">
-              <div className="text-center mb-10">
-                <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">ESPLORA</p>
-                <h2 className="text-4xl font-bold text-white">Scegli la tua categoria</h2>
-              </div>
-              <div className="grid grid-cols-6 gap-4">
-                {[
-                  {icon:'🎧',name:'Audio',color:'rgba(139,92,246,0.15)',border:'rgba(139,92,246,0.3)'},
-                  {icon:'⌚',name:'Wearables',color:'rgba(236,72,153,0.15)',border:'rgba(236,72,153,0.3)'},
-                  {icon:'💻',name:'Computing',color:'rgba(59,130,246,0.15)',border:'rgba(59,130,246,0.3)'},
-                  {icon:'🥽',name:'Vision',color:'rgba(16,185,129,0.15)',border:'rgba(16,185,129,0.3)'},
-                  {icon:'🏠',name:'Home',color:'rgba(245,158,11,0.15)',border:'rgba(245,158,11,0.3)'},
-                  {icon:'🎮',name:'Gaming',color:'rgba(239,68,68,0.15)',border:'rgba(239,68,68,0.3)'},
-                ].map(cat => (
-                  <button key={cat.name} onClick={() => setPage('products')}
-                    className="flex flex-col items-center gap-3 p-5 rounded-2xl transition hover:scale-105"
-                    style={{background:cat.color, border:`1px solid ${cat.border}`}}>
-                    <span className="text-4xl">{cat.icon}</span>
-                    <span className="text-white font-semibold text-sm">{cat.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* ── FEATURED PRODUCTS — Lovable style 3x2 grid ── */}
-            {getProducts().length > 0 && (
-              <div className="max-w-6xl mx-auto px-6 pb-16">
-                <div className="flex justify-between items-end mb-8">
-                  <h2 className="text-4xl font-bold text-white">Featured products</h2>
-                  <button onClick={() => setPage('products')} className="text-gray-400 hover:text-white transition text-sm flex items-center gap-1">View all →</button>
-                </div>
-                <div className="grid grid-cols-3 gap-5">
-                  {getProducts().slice(0,6).map(p => (
-                    <div key={p.id} className="product-card" onClick={() => setCurrentProduct(p)}>
-                      <div className="product-card-img" style={{height:'240px'}}>
-                        {p.image ? <img src={p.image} alt={p.name} /> : <div className="text-6xl">📦</div>}
-                        <div style={{position:'absolute',top:'12px',left:'12px',right:'12px',display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-                          {p.badge
-                            ? <span className={`${getBadgeClass(p.badge)} text-white text-xs font-bold px-3 py-1 rounded-full uppercase`}>{p.badge}</span>
-                            : <span></span>
-                          }
-                          <span className="cat-pill">{p.category}</span>
-                        </div>
-                      </div>
-                      <div className="p-5">
-                        <h3 className="font-bold text-white text-lg mb-1">{p.name}</h3>
-                        <p className="text-gray-500 text-sm mb-3">{p.tagline}</p>
-                        <div className="flex justify-between items-center">
-                          <p className="text-white font-black text-2xl">€{p.price}</p>
-                          <div className="flex items-center gap-1">
-                            <span className="text-yellow-400">★</span>
-                            <span className="text-gray-400 text-sm">{p.rating}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ── PERCHÉ NEXUS ── */}
-            <div className="max-w-6xl mx-auto px-6 pb-16">
-              <div className="text-center mb-10">
-                <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">I NOSTRI VALORI</p>
-                <h2 className="text-4xl font-bold text-white">Perché scegliere Nexus</h2>
-              </div>
-              <div className="grid grid-cols-3 gap-6">
-                {[
-                  {icon:'🚀',title:'Spedizione Express',desc:'Consegna in 24h su tutta Europa. Ritiro gratuito in negozio disponibile.',color:'rgba(124,58,237,0.1)',border:'rgba(124,58,237,0.2)'},
-                  {icon:'🛡️',title:'Garanzia 3 anni',desc:'Ogni prodotto coperto da garanzia estesa. Assistenza dedicata 7/7.',color:'rgba(16,185,129,0.1)',border:'rgba(16,185,129,0.2)'},
-                  {icon:'↩️',title:'Resi gratuiti',desc:'30 giorni per restituire qualsiasi prodotto, senza domande.',color:'rgba(236,72,153,0.1)',border:'rgba(236,72,153,0.2)'},
-                ].map(f => (
-                  <div key={f.title} className="rounded-2xl p-8 text-center transition hover:scale-105" style={{background:f.color,border:`1px solid ${f.border}`}}>
-                    <div className="text-5xl mb-5">{f.icon}</div>
-                    <h3 className="text-white font-bold text-xl mb-3">{f.title}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ── PRESS ── */}
-            <div className="max-w-6xl mx-auto px-6 pb-16">
-              <div className="glass rounded-3xl p-8">
-                <p className="text-center text-gray-500 text-xs uppercase tracking-widest mb-6">Riconosciuti dai migliori</p>
-                <div className="flex justify-center items-center gap-12 flex-wrap">
-                  {['TIME','WIRED','Fast Company','Wallpaper*','T3','Engadget'].map(brand => (
-                    <span key={brand} className="text-gray-600 font-black text-xl hover:text-gray-300 transition cursor-default tracking-tight">{brand}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <Footer setPage={setPage} />
-          </>
-        )}
-
-        {(page === 'compare' || page === 'account') && (
-          <div className="max-w-6xl mx-auto px-6 pt-36 pb-20 text-center">
-            <div className="text-6xl mb-6">{page === 'compare' ? '⚖️' : '👤'}</div>
-            <h2 className="text-4xl font-bold text-white mb-3">{page === 'compare' ? 'Compare Products' : 'Account'}</h2>
-            <p className="text-gray-400 mb-8">{page === 'compare' ? 'Prossimamente — confronta fino a 4 prodotti.' : 'Prossimamente — login, ordini e wishlist.'}</p>
-            <button onClick={() => setPage('home')} className="btn-primary px-8 py-3 rounded-2xl text-white font-semibold">← Torna alla home</button>
-          </div>
-        )}
-
-        {page === 'products' && (
-          <div className="max-w-6xl mx-auto px-6 pt-28">
-            <ProductsPage onAddToCart={(p) => {addToCart(p);setCartOpen(true);}} onProductClick={setCurrentProduct} />
-            <Footer setPage={setPage} />
-          </div>
-        )}
-      </main>
-    </div>
-  );
-}
-
-// Seed default products if localStorage is empty
-(function seedProducts() {
-  const existing = getProducts();
-  if (existing.length > 0) return;
-  const defaults = [
-    {
-      id: 'default-1',
-      name: 'Aura Pods Pro',
-      tagline: 'Spatial audio, reimagined.',
-      category: 'Audio',
-      price: 449,
-      originalPrice: 549,
-      rating: 4.9,
-      reviews: 2841,
-      badge: 'New',
-      description: 'Cuffie over-ear con cancellazione attiva del rumore di nuova generazione. Driver planari da 40mm, audio spaziale 3D e 30 ore di autonomia. Il silenzio non è mai stato così nitido.',
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
-      specs: [
-        {label:'Driver',value:'40mm planari'},
-        {label:'ANC',value:'ibrido -42dB'},
-        {label:'Autonomia',value:'30h'},
-        {label:'Connessione',value:'Bluetooth 5.3'},
-      ]
-    },
-    {
-      id: 'default-2',
-      name: 'Chrono X',
-      tagline: 'Time, but smarter.',
-      category: 'Wearables',
-      price: 699,
-      originalPrice: 849,
-      rating: 4.8,
-      reviews: 1923,
-      badge: 'Featured',
-      description: 'Smartwatch premium con cassa in titanio spazzolato, display AMOLED always-on e monitoraggio salute avanzato. GPS multi-banda, ECG e SpO2 integrati.',
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
-      specs: [
-        {label:'Display',value:'1.4" AMOLED 454px'},
-        {label:'Cassa',value:'Titanio Grade 5'},
-        {label:'Autonomia',value:'9 giorni'},
-        {label:'Water resistance',value:'10ATM'},
-      ]
-    },
-    {
-      id: 'default-3',
-      name: 'NovaBook Air',
-      tagline: 'Featherlight. Unstoppable.',
-      category: 'Computing',
-      price: 1899,
-      originalPrice: 2199,
-      rating: 4.9,
-      reviews: 3102,
-      badge: '',
-      description: 'Laptop ultrasottile da 13.6" con chip N1 Silicon, 18h di autonomia e display Liquid Retina. Solo 1.24kg per portare ovunque la massima potenza.',
-      image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80',
-      specs: [
-        {label:'Chip',value:'N1 Silicon 12-core'},
-        {label:'RAM',value:'16GB unified'},
-        {label:'Storage',value:'512GB NVMe'},
-        {label:'Peso',value:'1.24kg'},
-      ]
-    },
-    {
-      id: 'default-4',
-      name: 'Lens One',
-      tagline: 'The world, augmented.',
-      category: 'Vision',
-      price: 2499,
-      originalPrice: 2999,
-      rating: 4.7,
-      reviews: 874,
-      badge: 'Limited',
-      description: 'Occhiali AR di prima generazione con display olografico waveguide, fotocamere stereo 12MP e un giorno intero di autonomia. La realtà non sarà più la stessa.',
-      image: 'https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=800&q=80',
-      specs: [
-        {label:'Display',value:'Olografico waveguide'},
-        {label:'FOV',value:'52° diagonale'},
-        {label:'Camera',value:'12MP stereo'},
-        {label:'Autonomia',value:'8h uso attivo'},
-      ]
-    },
-    {
-      id: 'default-5',
-      name: 'Orb Mini',
-      tagline: 'Sound that fills the room.',
-      category: 'Home',
-      price: 299,
-      originalPrice: 349,
-      rating: 4.6,
-      reviews: 1567,
-      badge: '',
-      description: 'Speaker smart sferico con audio a 360°, 6 woofer e AI room calibration. Si adatta acusticamente a qualsiasi ambiente in pochi secondi.',
-      image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80',
-      specs: [
-        {label:'Driver',value:'6x woofer + tweeter'},
-        {label:'Potenza',value:'120W RMS'},
-        {label:'Connessione',value:'Wi-Fi 6 + BT 5.2'},
-        {label:'Assistenti',value:'Nexus AI / Alexa'},
-      ]
-    },
-    {
-      id: 'default-6',
-      name: 'Pulse Pad',
-      tagline: 'Built for champions.',
-      category: 'Gaming',
-      price: 199,
-      originalPrice: 229,
-      rating: 4.8,
-      reviews: 4210,
-      badge: 'Hot',
-      description: 'Controller wireless con feedback aptico avanzato, grilletti adattativi e 40h di autonomia. Compatibile con PC, console e cloud gaming.',
-      image: 'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=800&q=80',
-      specs: [
-        {label:'Connessione',value:'2.4GHz + BT 5.1'},
-        {label:'Autonomia',value:'40h'},
-        {label:'Haptic',value:'HD dual-motor'},
-        {label:'Peso',value:'218g'},
-      ]
-    },
-  ];
-  saveProducts(defaults);
-})();
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
