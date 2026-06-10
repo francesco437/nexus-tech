@@ -1270,8 +1270,81 @@ function App() {
               </div>
             </div>
 
+            {/* Categorie */}
+            <div className="max-w-6xl mx-auto px-6 pb-16">
+              <div className="text-center mb-10">
+                <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">ESPLORA</p>
+                <h2 className="text-4xl font-bold text-white">Scegli la tua categoria</h2>
+              </div>
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+                {[
+                  {icon:'🎧',name:'Audio',color:'rgba(139,92,246,0.15)',border:'rgba(139,92,246,0.3)'},
+                  {icon:'⌚',name:'Wearables',color:'rgba(236,72,153,0.15)',border:'rgba(236,72,153,0.3)'},
+                  {icon:'💻',name:'Computing',color:'rgba(59,130,246,0.15)',border:'rgba(59,130,246,0.3)'},
+                  {icon:'🥽',name:'Vision',color:'rgba(16,185,129,0.15)',border:'rgba(16,185,129,0.3)'},
+                  {icon:'🏠',name:'Home',color:'rgba(245,158,11,0.15)',border:'rgba(245,158,11,0.3)'},
+                  {icon:'🎮',name:'Gaming',color:'rgba(239,68,68,0.15)',border:'rgba(239,68,68,0.3)'},
+                ].map(cat => (
+                  <button key={cat.name} onClick={() => setPage('products')}
+                    className="flex flex-col items-center gap-3 p-5 rounded-2xl transition hover:scale-105"
+                    style={{background:cat.color, border:`1px solid ${cat.border}`}}>
+                    <span className="text-4xl">{cat.icon}</span>
+                    <span className="text-white font-semibold text-sm">{cat.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Prodotto in evidenza (hero) */}
+            {getProducts().length > 0 && (() => {
+              const featured = getProducts().find(p => p.badge && ['featured','in evidenza'].includes(p.badge.toLowerCase())) || getProducts()[0];
+              return (
+                <div className="max-w-6xl mx-auto px-6 pb-16">
+                  <div className="rounded-3xl overflow-hidden" style={{background:'linear-gradient(135deg,rgba(124,58,237,0.15),rgba(236,72,153,0.1))',border:'1px solid rgba(139,92,246,0.25)'}}>
+                    <div className="grid grid-cols-2 gap-0">
+                      <div className="relative overflow-hidden" style={{minHeight:'400px'}}>
+                        {featured.image
+                          ? <img src={featured.image} alt={featured.name} className="w-full h-full object-cover" style={{minHeight:'400px'}} />
+                          : <div className="w-full h-full flex items-center justify-center text-9xl" style={{minHeight:'400px',background:'rgba(255,255,255,0.02)'}}>📦</div>
+                        }
+                        <div className="absolute inset-0" style={{background:'linear-gradient(to right,transparent 60%,rgba(10,10,15,0.8))'}}></div>
+                        {featured.badge && (
+                          <span className={`absolute top-6 left-6 ${getBadgeClass(featured.badge)} text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wide`}>{featured.badge}</span>
+                        )}
+                      </div>
+                      <div className="flex flex-col justify-center p-12">
+                        <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-3">{featured.category} · IN EVIDENZA</p>
+                        <h2 className="text-5xl font-black text-white mb-3 leading-tight">{featured.name}</h2>
+                        <p className="text-gray-300 text-lg mb-2">{featured.tagline}</p>
+                        {featured.description && <p className="text-gray-500 text-sm mb-6 leading-relaxed line-clamp-3">{featured.description}</p>}
+                        {featured.specs && featured.specs.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-8">
+                            {featured.specs.slice(0,4).map((s,i) => (
+                              <span key={i} className="glass text-gray-300 text-xs px-3 py-1.5 rounded-lg">{s.label}: {s.value}</span>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex items-center gap-4 mb-8">
+                          <span className="text-5xl font-black text-white">€{featured.price}</span>
+                          <div className="flex flex-col">
+                            <div className="flex gap-0.5">{[1,2,3,4,5].map(i=><span key={i} className={i<=Math.round(featured.rating)?'text-yellow-400':'text-gray-700'}>★</span>)}</div>
+                            <span className="text-gray-500 text-xs">{featured.reviews?.toLocaleString()} recensioni</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <button onClick={() => setCurrentProduct(featured)} className="btn-primary px-8 py-3 rounded-xl font-bold text-white">Scopri di più →</button>
+                          <button onClick={() => {addToCart(featured);setCartOpen(true);}} className="glass px-6 py-3 rounded-xl font-semibold text-white hover:bg-white/10 transition">+ Carrello</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Prodotti in evidenza grid */}
             {getProducts().length > 0 && (
-              <div className="max-w-6xl mx-auto px-6 pb-10">
+              <div className="max-w-6xl mx-auto px-6 pb-16">
                 <div className="flex justify-between items-end mb-8">
                   <div>
                     <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-1">COLLEZIONE 04</p>
@@ -1302,6 +1375,40 @@ function App() {
                 </div>
               </div>
             )}
+
+            {/* Perché Nexus */}
+            <div className="max-w-6xl mx-auto px-6 pb-16">
+              <div className="text-center mb-10">
+                <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">I NOSTRI VALORI</p>
+                <h2 className="text-4xl font-bold text-white">Perché scegliere Nexus</h2>
+              </div>
+              <div className="grid grid-cols-3 gap-6">
+                {[
+                  {icon:'🚀',title:'Spedizione Express',desc:'Consegna in 24h su tutta Europa. Ritiro gratuito in negozio disponibile.',color:'rgba(124,58,237,0.1)',border:'rgba(124,58,237,0.2)'},
+                  {icon:'🛡️',title:'Garanzia 3 anni',desc:'Ogni prodotto coperto da garanzia estesa. Assistenza dedicata 7/7.',color:'rgba(16,185,129,0.1)',border:'rgba(16,185,129,0.2)'},
+                  {icon:'↩️',title:'Resi gratuiti',desc:'30 giorni per restituire qualsiasi prodotto, senza domande.',color:'rgba(236,72,153,0.1)',border:'rgba(236,72,153,0.2)'},
+                ].map(f => (
+                  <div key={f.title} className="rounded-2xl p-8 text-center transition hover:scale-105" style={{background:f.color,border:`1px solid ${f.border}`}}>
+                    <div className="text-5xl mb-5">{f.icon}</div>
+                    <h3 className="text-white font-bold text-xl mb-3">{f.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Premi e riconoscimenti */}
+            <div className="max-w-6xl mx-auto px-6 pb-16">
+              <div className="glass rounded-3xl p-8">
+                <p className="text-center text-gray-500 text-xs uppercase tracking-widest mb-6">Riconosciuti dai migliori</p>
+                <div className="flex justify-center items-center gap-12 flex-wrap">
+                  {['TIME','WIRED','Fast Company','Wallpaper*','T3','Engadget'].map(brand => (
+                    <span key={brand} className="text-gray-600 font-black text-xl hover:text-gray-300 transition cursor-default tracking-tight">{brand}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <Footer setPage={setPage} />
           </>
         )}
