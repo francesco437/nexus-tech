@@ -1371,10 +1371,11 @@ const IMG = {
   gaming: `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e0a3c"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs><rect width="400" height="400" fill="url(#bg)"/><path d="M105 178 Q105 152 128 146 L178 140 Q200 135 222 140 L272 146 Q295 152 295 178 L295 222 Q295 248 268 254 L248 260 Q200 272 152 260 L132 254 Q105 248 105 222 Z" fill="#2d1b69" stroke="#a78bfa" stroke-width="2"/><rect x="128" y="181" width="4" height="22" rx="2" fill="#a78bfa"/><rect x="119" y="190" width="22" height="4" rx="2" fill="#a78bfa"/><circle cx="260" cy="182" r="6" fill="#f87171"/><circle cx="274" cy="196" r="6" fill="#4ade80"/><circle cx="260" cy="210" r="6" fill="#60a5fa"/><circle cx="246" cy="196" r="6" fill="#facc15"/><rect x="182" y="212" width="36" height="10" rx="5" fill="#4c1d95"/><ellipse cx="162" cy="238" rx="22" ry="14" fill="#1e0a3c" stroke="#7c3aed" stroke-width="1.5"/><ellipse cx="238" cy="238" rx="22" ry="14" fill="#1e0a3c" stroke="#7c3aed" stroke-width="1.5"/><text x="200" y="348" text-anchor="middle" fill="rgba(255,255,255,0.45)" font-size="12" font-family="sans-serif" font-weight="700" letter-spacing="3">GAMING</text></svg>')}`,
 };
 
-// Seed default products if localStorage is empty
+// Always seed fresh default products (reset if using old SVG images)
 (function seedProducts() {
   const existing = getProducts();
-  if (existing.length > 0) return;
+  const needsReset = existing.length === 0 || (existing[0] && existing[0].image && existing[0].image.startsWith("data:"));
+  if (!needsReset) return;
   const defaults = [
     {
       id: 'default-1',
@@ -1387,7 +1388,7 @@ const IMG = {
       reviews: 2841,
       badge: 'New',
       description: 'Cuffie over-ear con cancellazione attiva del rumore di nuova generazione. Driver planari da 40mm, audio spaziale 3D e 30 ore di autonomia. Il silenzio non è mai stato così nitido.',
-      image: IMG.audio,
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
       specs: [
         {label:'Driver',value:'40mm planari'},
         {label:'ANC',value:'ibrido -42dB'},
@@ -1406,7 +1407,7 @@ const IMG = {
       reviews: 1923,
       badge: 'Featured',
       description: 'Smartwatch premium con cassa in titanio spazzolato, display AMOLED always-on e monitoraggio salute avanzato. GPS multi-banda, ECG e SpO2 integrati.',
-      image: IMG.wearables,
+      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
       specs: [
         {label:'Display',value:'1.4" AMOLED 454px'},
         {label:'Cassa',value:'Titanio Grade 5'},
@@ -1425,7 +1426,7 @@ const IMG = {
       reviews: 3102,
       badge: '',
       description: 'Laptop ultrasottile da 13.6" con chip N1 Silicon, 18h di autonomia e display Liquid Retina. Solo 1.24kg per portare ovunque la massima potenza.',
-      image: IMG.computing,
+      image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80',
       specs: [
         {label:'Chip',value:'N1 Silicon 12-core'},
         {label:'RAM',value:'16GB unified'},
@@ -1444,7 +1445,7 @@ const IMG = {
       reviews: 874,
       badge: 'Limited',
       description: 'Occhiali AR di prima generazione con display olografico waveguide, fotocamere stereo 12MP e un giorno intero di autonomia. La realtà non sarà più la stessa.',
-      image: IMG.vision,
+      image: 'https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?w=800&q=80',
       specs: [
         {label:'Display',value:'Olografico waveguide'},
         {label:'FOV',value:'52° diagonale'},
@@ -1463,7 +1464,7 @@ const IMG = {
       reviews: 1567,
       badge: '',
       description: 'Speaker smart sferico con audio a 360°, 6 woofer e AI room calibration. Si adatta acusticamente a qualsiasi ambiente in pochi secondi.',
-      image: IMG.home,
+      image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80',
       specs: [
         {label:'Driver',value:'6x woofer + tweeter'},
         {label:'Potenza',value:'120W RMS'},
@@ -1482,7 +1483,7 @@ const IMG = {
       reviews: 4210,
       badge: 'Hot',
       description: 'Controller wireless con feedback aptico avanzato, grilletti adattativi e 40h di autonomia. Compatibile con PC, console e cloud gaming.',
-      image: IMG.gaming,
+      image: 'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=800&q=80',
       specs: [
         {label:'Connessione',value:'2.4GHz + BT 5.1'},
         {label:'Autonomia',value:'40h'},
