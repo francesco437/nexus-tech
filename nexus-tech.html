@@ -1241,22 +1241,30 @@ function App() {
             <div className="max-w-6xl mx-auto px-6 pb-16">
               <div className="text-center mb-10">
                 <p className="text-purple-400 text-sm font-semibold tracking-widest uppercase mb-2">ESPLORA</p>
-                <h2 className="text-4xl font-bold text-white">Scegli la tua categoria</h2>
+                <h2 className="text-4xl font-bold text-white">Shop by category</h2>
               </div>
               <div className="grid grid-cols-6 gap-4">
                 {[
-                  {icon:'🎧',name:'Audio',color:'rgba(139,92,246,0.15)',border:'rgba(139,92,246,0.3)'},
-                  {icon:'⌚',name:'Wearables',color:'rgba(236,72,153,0.15)',border:'rgba(236,72,153,0.3)'},
-                  {icon:'💻',name:'Computing',color:'rgba(59,130,246,0.15)',border:'rgba(59,130,246,0.3)'},
-                  {icon:'🥽',name:'Vision',color:'rgba(16,185,129,0.15)',border:'rgba(16,185,129,0.3)'},
-                  {icon:'🏠',name:'Home',color:'rgba(245,158,11,0.15)',border:'rgba(245,158,11,0.3)'},
-                  {icon:'🎮',name:'Gaming',color:'rgba(239,68,68,0.15)',border:'rgba(239,68,68,0.3)'},
+                  {name:'Audio',     sub:'Headphones & Speakers', accent:'#7c3aed'},
+                  {name:'Wearables', sub:'Watches & Fitness',      accent:'#ec4899'},
+                  {name:'Computing', sub:'Laptops & Accessories',  accent:'#6366f1'},
+                  {name:'Vision',    sub:'AR & Smart Glasses',     accent:'#10b981'},
+                  {name:'Home',      sub:'Smart Home & Audio',     accent:'#f59e0b'},
+                  {name:'Gaming',    sub:'Controllers & Gear',     accent:'#ef4444'},
                 ].map(cat => (
                   <button key={cat.name} onClick={() => setPage('products')}
-                    className="flex flex-col items-center gap-3 p-5 rounded-2xl transition hover:scale-105"
-                    style={{background:cat.color, border:`1px solid ${cat.border}`}}>
-                    <span className="text-4xl">{cat.icon}</span>
-                    <span className="text-white font-semibold text-sm">{cat.name}</span>
+                    className="group flex flex-col gap-4 p-5 rounded-2xl text-left"
+                    style={{background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)', transition:'all 0.3s'}}
+                    onMouseEnter={e => { e.currentTarget.style.background=cat.accent+'18'; e.currentTarget.style.borderColor=cat.accent+'60'; e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow=`0 12px 40px ${cat.accent}25`; }}
+                    onMouseLeave={e => { e.currentTarget.style.background='rgba(255,255,255,0.03)'; e.currentTarget.style.borderColor='rgba(255,255,255,0.07)'; e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='none'; }}
+                  >
+                    <div style={{width:'40px',height:'40px',borderRadius:'10px',background:cat.accent+'20',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',color:cat.accent,fontWeight:'900',letterSpacing:'-1px'}}>
+                      {cat.name.slice(0,2)}
+                    </div>
+                    <div>
+                      <p style={{color:'white',fontWeight:'700',fontSize:'14px',marginBottom:'3px'}}>{cat.name}</p>
+                      <p style={{color:'rgba(255,255,255,0.35)',fontSize:'11px'}}>{cat.sub}</p>
+                    </div>
                   </button>
                 ))}
               </div>
